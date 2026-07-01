@@ -3,8 +3,8 @@ package br.com.postechfiap.toloni.restauranthub.adapters.gateways;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.*;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageFilter;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.user.User;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
@@ -13,6 +13,7 @@ import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserPassw
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.RestaurantJpaEntity;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserJpaEntity;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.RestaurantGatewayImpl;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -179,8 +180,8 @@ class RestaurantGatewayImplTest {
         var result = gateway.findAll(pageRequest);
 
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getTotalElements()).isEqualTo(1L);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.totalElements()).isEqualTo(1L);
     }
 
     @Test
@@ -198,8 +199,8 @@ class RestaurantGatewayImplTest {
 
         var result = gateway.findAll(pageRequest);
 
-        assertThat(result.getContent()).isEmpty();
-        assertThat(result.getTotalElements()).isZero();
+        assertThat(result.content()).isEmpty();
+        assertThat(result.totalElements()).isZero();
     }
 
     // -------------------------------------------------------------------------
@@ -363,10 +364,10 @@ class RestaurantGatewayImplTest {
         var result = gateway.findAllWithOwnerName(pageRequest);
 
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).restaurant().getId()).isEqualTo(id);
-        assertThat(result.getContent().get(0).ownerName()).isEqualTo("John Doe");
-        assertThat(result.getTotalElements()).isEqualTo(1L);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).restaurant().getId()).isEqualTo(id);
+        assertThat(result.content().get(0).ownerName()).isEqualTo("John Doe");
+        assertThat(result.totalElements()).isEqualTo(1L);
     }
 
     @Test
@@ -388,8 +389,8 @@ class RestaurantGatewayImplTest {
 
         var result = gateway.findAllWithOwnerName(pageRequest);
 
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).restaurant().getName().getValue()).isEqualTo("The Great Burger");
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).restaurant().getName().getValue()).isEqualTo("The Great Burger");
     }
 
     @Test
@@ -407,7 +408,7 @@ class RestaurantGatewayImplTest {
 
         var result = gateway.findAllWithOwnerName(pageRequest);
 
-        assertThat(result.getContent()).isEmpty();
-        assertThat(result.getTotalElements()).isZero();
+        assertThat(result.content()).isEmpty();
+        assertThat(result.totalElements()).isZero();
     }
 }

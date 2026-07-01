@@ -1,8 +1,8 @@
 package br.com.postechfiap.toloni.restauranthub.adapters.gateways;
 
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageFilter;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.user.User;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
@@ -15,6 +15,7 @@ import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserT
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeName;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserJpaEntity;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserTypeJpaEntity;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.UserGatewayImpl;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -191,9 +192,9 @@ class UserGatewayImplTest {
         var result = gateway.findAllWithUserTypeName(pageRequest);
 
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().getFirst().user().getId()).isEqualTo(id);
-        assertThat(result.getTotalElements()).isEqualTo(1L);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().getFirst().user().getId()).isEqualTo(id);
+        assertThat(result.totalElements()).isEqualTo(1L);
     }
 
     @Test
@@ -215,8 +216,8 @@ class UserGatewayImplTest {
 
         var result = gateway.findAllWithUserTypeName(pageRequest);
 
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).user().getName().getValue()).isEqualTo("John Doe");
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).user().getName().getValue()).isEqualTo("John Doe");
     }
 
     @Test
@@ -234,8 +235,8 @@ class UserGatewayImplTest {
 
         var result = gateway.findAllWithUserTypeName(pageRequest);
 
-        assertThat(result.getContent()).isEmpty();
-        assertThat(result.getTotalElements()).isZero();
+        assertThat(result.content()).isEmpty();
+        assertThat(result.totalElements()).isZero();
     }
 
     // -------------------------------------------------------------------------
@@ -258,8 +259,8 @@ class UserGatewayImplTest {
         var result = gateway.findAll(pageRequest);
 
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getTotalElements()).isEqualTo(1L);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.totalElements()).isEqualTo(1L);
     }
 
     // -------------------------------------------------------------------------

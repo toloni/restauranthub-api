@@ -1,14 +1,15 @@
 package br.com.postechfiap.toloni.restauranthub.adapters.gateways;
 
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageFilter;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserType;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeDescription;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeName;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserTypeJpaEntity;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.UserTypeGatewayImpl;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserTypeJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -137,10 +138,10 @@ class UserTypeGatewayImplTest {
         var result = gateway.findAll(pageRequest);
 
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getTotalElements()).isEqualTo(1L);
-        assertThat(result.getPageNumber()).isZero();
-        assertThat(result.getPageSize()).isEqualTo(10);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.totalElements()).isEqualTo(1L);
+        assertThat(result.pageNumber()).isZero();
+        assertThat(result.pageSize()).isEqualTo(10);
     }
 
     @Test
@@ -162,8 +163,8 @@ class UserTypeGatewayImplTest {
 
         var result = gateway.findAll(pageRequest);
 
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getName().getValue()).isEqualTo("Restaurant Owner");
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).getName().getValue()).isEqualTo("Restaurant Owner");
     }
 
     @Test
@@ -181,8 +182,8 @@ class UserTypeGatewayImplTest {
 
         var result = gateway.findAll(pageRequest);
 
-        assertThat(result.getContent()).isEmpty();
-        assertThat(result.getTotalElements()).isZero();
+        assertThat(result.content()).isEmpty();
+        assertThat(result.totalElements()).isZero();
     }
 
     // -------------------------------------------------------------------------
