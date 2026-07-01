@@ -1,11 +1,11 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.restaurant;
 
 import br.com.postechfiap.toloni.restauranthub.adapters.controllers.RestaurantController;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.DeleteRestaurantUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.FindAllRestaurantsUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.FindRestaurantByIdUseCase;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +44,8 @@ public class RestaurantRestController implements RestaurantApi {
 
     @Override
     public RestaurantTransferOwnershipResponse transferOwnership(@PathVariable String id,
-                                     @RequestHeader("X-User-Id") String requesterId,
-                                     @RequestBody RestaurantTransferOwnershipRequest request) {
+                                                                 @RequestHeader("X-User-Id") String requesterId,
+                                                                 @RequestBody RestaurantTransferOwnershipRequest request) {
         return RestaurantTransferOwnershipResponse.from(restaurantController.transferOwnership(
                 request.toUpdateOwnershipInput(
                         RestaurantId.of(id),
@@ -93,10 +93,10 @@ public class RestaurantRestController implements RestaurantApi {
                 new FindAllRestaurantsUseCase.Input(PageRequest.of(page, size, filters, sorts))
         );
 
-        var content = output.getContent().stream()
+        var content = output.content().stream()
                 .map(RestaurantResponse::from)
                 .toList();
 
-        return Page.of(content, output.getPageNumber(), output.getPageSize(), output.getTotalElements());
+        return Page.of(content, output.pageNumber(), output.pageSize(), output.totalElements());
     }
 }

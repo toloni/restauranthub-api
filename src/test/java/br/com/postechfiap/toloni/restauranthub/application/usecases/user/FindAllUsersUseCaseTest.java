@@ -1,11 +1,11 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.user;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageFilter;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageSort;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageSort;
 import br.com.postechfiap.toloni.restauranthub.domain.user.User;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.UserWithTypeName;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
@@ -78,10 +78,10 @@ class FindAllUsersUseCaseTest {
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
         assertThat(output).isNotNull();
-        assertThat(output.getContent()).hasSize(2);
-        assertThat(output.getTotalElements()).isEqualTo(2L);
-        assertThat(output.getPageNumber()).isZero();
-        assertThat(output.getPageSize()).isEqualTo(10);
+        assertThat(output.content()).hasSize(2);
+        assertThat(output.totalElements()).isEqualTo(2L);
+        assertThat(output.pageNumber()).isZero();
+        assertThat(output.pageSize()).isEqualTo(10);
     }
 
     @Test
@@ -95,7 +95,7 @@ class FindAllUsersUseCaseTest {
 
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
-        var first = output.getContent().get(0);
+        var first = output.content().get(0);
         assertThat(first.id()).isEqualTo(johnUser.getId());
         assertThat(first.name()).isEqualTo(johnUser.getName().getValue());
         assertThat(first.email()).isEqualTo(johnUser.getEmail().getValue());
@@ -117,8 +117,8 @@ class FindAllUsersUseCaseTest {
 
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
-        assertThat(output.getContent().get(0).userTypeName()).isEqualTo("Restaurant Owner");
-        assertThat(output.getContent().get(1).userTypeName()).isEqualTo("Customer");
+        assertThat(output.content().get(0).userTypeName()).isEqualTo("Restaurant Owner");
+        assertThat(output.content().get(1).userTypeName()).isEqualTo("Customer");
     }
 
     @Test
@@ -131,8 +131,8 @@ class FindAllUsersUseCaseTest {
 
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
-        assertThat(output.getContent()).isEmpty();
-        assertThat(output.getTotalElements()).isZero();
+        assertThat(output.content()).isEmpty();
+        assertThat(output.totalElements()).isZero();
         assertThat(output.isEmpty()).isTrue();
     }
 
@@ -147,9 +147,9 @@ class FindAllUsersUseCaseTest {
 
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
-        assertThat(output.getPageNumber()).isEqualTo(1);
-        assertThat(output.getPageSize()).isEqualTo(5);
-        assertThat(output.getTotalElements()).isEqualTo(6L);
+        assertThat(output.pageNumber()).isEqualTo(1);
+        assertThat(output.pageSize()).isEqualTo(5);
+        assertThat(output.totalElements()).isEqualTo(6L);
         assertThat(output.getTotalPages()).isEqualTo(2);
     }
 
@@ -199,8 +199,8 @@ class FindAllUsersUseCaseTest {
 
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
-        assertThat(output.getContent()).hasSize(1);
-        assertThat(output.getContent().get(0).name()).isEqualTo("John Doe");
+        assertThat(output.content()).hasSize(1);
+        assertThat(output.content().get(0).name()).isEqualTo("John Doe");
     }
 
     @Test
@@ -219,7 +219,7 @@ class FindAllUsersUseCaseTest {
 
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
-        assertThat(output.getContent().get(0).name()).isEqualTo("Jane Doe");
-        assertThat(output.getContent().get(1).name()).isEqualTo("John Doe");
+        assertThat(output.content().get(0).name()).isEqualTo("Jane Doe");
+        assertThat(output.content().get(1).name()).isEqualTo("John Doe");
     }
 }

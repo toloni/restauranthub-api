@@ -1,6 +1,6 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.restaurant;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -41,6 +41,12 @@ public interface RestaurantApi {
             @Parameter(description = "Authenticated user identifier", required = true) @RequestHeader("X-User-Id") String userId,
             @RequestBody RestaurantRequest request);
 
+    @Operation(summary = "Transfer restaurant ownership", description = "Transfers the ownership of a restaurant to a new owner. Requires admin role.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ownership transferred successfully"),
+            @ApiResponse(responseCode = "403", description = "Requester is not an admin, or new owner does not have the RESTAURANT_OWNER role"),
+            @ApiResponse(responseCode = "404", description = "Restaurant or user not found")
+    })
     @PatchMapping("/{id}/transfer-ownership")
     RestaurantTransferOwnershipResponse transferOwnership(
             @Parameter(description = "Restaurant identifier", required = true) @PathVariable String id,

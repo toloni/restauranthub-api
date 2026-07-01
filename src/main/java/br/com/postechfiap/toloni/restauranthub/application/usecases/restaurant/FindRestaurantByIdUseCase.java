@@ -1,6 +1,6 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;

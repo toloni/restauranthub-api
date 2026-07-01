@@ -19,7 +19,7 @@ RestaurantHub is a shared restaurant management system that allows restaurant ow
 - Users with the `ADMIN` role have full access to all resources regardless of ownership
 - User types in use cannot be deleted
 - Users associated with a restaurant cannot be deleted
-- Restaurants with menu items cannot be deleted
+- A restaurant and all its associated MenuItem instances are deleted together
 
 ## Technologies
 
@@ -40,21 +40,13 @@ RestaurantHub is a shared restaurant management system that allows restaurant ow
 src/main/java/br/com/postechfiap/toloni/restauranthub
 │
 ├── domain                                 # Enterprise business rules
-│   ├── shared                             # Cross-cutting domain concerns
-│   │   ├── authorization
-│   │   │   └── AuthorizationService       # Role-based access control
-│   │   ├── exception
-│   │   │   ├── AlreadyExistsException     # Resource already exists (409)
-│   │   │   ├── NotFoundException          # Resource not found (404)
-│   │   │   ├── DomainException            # Base domain exception (422)
-│   │   │   ├── EntityInUseException       # Resource in use (409)
-│   │   │   └── UnauthorizedException      # Access denied (403)
-│   │   └── pagination
-│   │       ├── Page                       # Paginated result set
-│   │       ├── PageRequest                # Pagination parameters
-│   │       ├── PageFilter                 # Filter parameters
-│   │       ├── PageSort                   # Sort parameters
-│   │       └── SortDirection              # ASC / DESC enum
+│   ├── shared
+│   │   └── exception
+│   │       ├── AlreadyExistsException     # Resource already exists (409)
+│   │       ├── NotFoundException          # Resource not found (404)
+│   │       ├── DomainException            # Base domain exception (422)
+│   │       ├── EntityInUseException       # Resource in use (409)
+│   │       └── UnauthorizedException      # Access denied (403)
 │   │
 │   ├── usertype                           # UserType aggregate
 │   │   ├── valueobject
@@ -62,8 +54,7 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
 │   │   │   ├── UserTypeName
 │   │   │   └── UserTypeId
 │   │   ├── UserRole                       # Enum: RESTAURANT_OWNER, CUSTOMER, ADMIN
-│   │   ├── UserType                       # UserType entity
-│   │   └── UserTypeGateway                # Persistence contract
+│   │   └── UserType                       # UserType entity
 │   │
 │   ├── user                               # User aggregate
 │   │   ├── valueobject
@@ -72,8 +63,7 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
 │   │   │   ├── UserEmail
 │   │   │   └── UserPassword
 │   │   ├── User                           # User entity
-│   │   ├── UserWithTypeName               # Read model enriched with UserType name
-│   │   └── UserGateway                    # Persistence contract
+│   │   └── UserWithTypeName               # Read model enriched with UserType name
 │   │
 │   ├── restaurant                         # Restaurant aggregate
 │   │   ├── valueobject
@@ -83,8 +73,7 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
 │   │   │   ├── RestaurantCuisineType
 │   │   │   └── RestaurantOpeningHours
 │   │   ├── Restaurant                     # Restaurant entity
-│   │   ├── RestaurantWithOwnerName        # Read model enriched with owner name
-│   │   └── RestaurantGateway              # Persistence contract
+│   │   └── RestaurantWithOwnerName        # Read model enriched with owner name
 │   │
 │   └── menuitem                           # MenuItem aggregate
 │       ├── valueobject
@@ -94,11 +83,23 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
 │       │   ├── MenuItemPrice
 │       │   └── MenuItemImagePath
 │       ├── MenuItem                       # MenuItem entity
-│       ├── MenuItemWithRestaurantName     # Read model enriched with Restaurant name
-│       └── MenuItemGateway                # Persistence contract
+│       └── MenuItemWithRestaurantName     # Read model enriched with Restaurant name
 │
 ├── application                            # Application business rules
-│   └── usecase
+│   ├── authorization
+│   │   └── AuthorizationService           # Role-based access control
+│   ├── gateways                           # Persistence contracts (ports)
+│   │   ├── UserTypeGateway
+│   │   ├── UserGateway
+│   │   ├── RestaurantGateway
+│   │   └── MenuItemGateway
+│   ├── pagination
+│   │   ├── Page                           # Paginated result set
+│   │   ├── PageRequest                    # Pagination parameters
+│   │   ├── PageFilter                     # Filter parameters
+│   │   ├── PageSort                       # Sort parameters
+│   │   └── SortDirection                  # ASC / DESC enum
+│   └── usecases
 │       ├── usertype
 │       │   ├── CreateUserTypeUseCase
 │       │   ├── UpdateUserTypeUseCase
@@ -117,7 +118,7 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
 │       │   ├── DeleteRestaurantUseCase
 │       │   ├── FindRestaurantByIdUseCase
 │       │   ├── FindAllRestaurantsUseCase
-│       │   └── RestaurantTransferOwnershipUseCase
+│       │   └── TransferRestaurantOwnershipUseCase
 │       └── menuitem
 │           ├── CreateMenuItemUseCase
 │           ├── UpdateMenuItemUseCase
@@ -125,19 +126,26 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
 │           ├── FindMenuItemByIdUseCase
 │           └── FindAllMenuItemsUseCase
 │
-├── adapters                                # Interface adapters
+├── adapters                               # Interface adapters
 │   ├── controllers
 │   │   ├── UserTypeController
 │   │   ├── UserController
 │   │   ├── RestaurantController
 │   │   └── MenuItemController
-│   ├── shared
-│   │   └── PageRequestMapper          # Domain PageRequest → Spring Pageable
-│   └── gateways
-│       ├── UserTypeGatewayImpl
-│       ├── UserGatewayImpl
-│       ├── RestaurantGatewayImpl
-│       └── MenuItemGatewayImpl
+│   └── presenters
+│       ├── usertype
+│       │   ├── UserTypePresenter
+│       │   └── UserTypeViewModel
+│       ├── user
+│       │   ├── UserPresenter
+│       │   └── UserViewModel
+│       ├── restaurant
+│       │   ├── RestaurantPresenter
+│       │   ├── RestaurantViewModel
+│       │   └── TransferOwnershipViewModel
+│       └── menuitem
+│           ├── MenuItemPresenter
+│           └── MenuItemViewModel
 │
 └── infrastructure                         # Frameworks and drivers
     ├── config                             # Spring Bean configuration
@@ -158,8 +166,14 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
     │   │   ├── UserJpaRepository
     │   │   ├── RestaurantJpaRepository
     │   │   └── MenuItemJpaRepository
+    │   ├── gateways                       # Gateway implementations (adapters)
+    │   │   ├── UserTypeGatewayImpl
+    │   │   ├── UserGatewayImpl
+    │   │   ├── RestaurantGatewayImpl
+    │   │   └── MenuItemGatewayImpl
     │   └── shared
-    │       └── JpaSpecificationBuilder    # Dynamic filters via JPA Specification
+    │       ├── JpaSpecificationBuilder    # Dynamic filters via JPA Specification
+    │       └── PageRequestMapper          # Domain PageRequest → Spring Pageable
     └── web
         ├── filter
         │   └── HttpLoggingFilter          # Request/response logging
@@ -464,6 +478,25 @@ export DB_PASSWORD=root
 
 ---
 
+## Docker File
+
+```
+FROM eclipse-temurin:25-jdk AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+COPY .mvn .mvn
+COPY mvnw .
+RUN ./mvnw clean package -DskipTests
+
+FROM eclipse-temurin:25-jre
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+---
+
 ## Docker Compose
 
 The `docker-compose.yml` configures two services:
@@ -493,7 +526,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
   db:
     image: mysql:8
     environment:
@@ -518,15 +550,11 @@ volumes:
 
 Swagger UI is available after starting the application:
 
-## API Documentation
-
-Swagger UI is available after starting the application:
-
 http://localhost:8080/swagger-ui.html
 
 OpenAPI JSON specification:
 
-http://localhost:8080/v3/api-docs
+http://localhost:8080/api-docs
 
 ---
 

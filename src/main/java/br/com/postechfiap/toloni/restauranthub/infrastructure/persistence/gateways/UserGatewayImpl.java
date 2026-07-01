@@ -1,11 +1,10 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways;
 
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
 import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
 import br.com.postechfiap.toloni.restauranthub.domain.user.User;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.UserWithTypeName;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
@@ -13,6 +12,7 @@ import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserT
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserJpaEntity;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.JpaSpecificationBuilder;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Optional;

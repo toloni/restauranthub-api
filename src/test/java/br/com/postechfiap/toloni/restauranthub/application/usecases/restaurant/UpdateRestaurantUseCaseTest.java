@@ -1,14 +1,14 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
+import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.*;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.authorization.AuthorizationService;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.AlreadyExistsException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.DomainException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.UnauthorizedException;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -80,7 +80,7 @@ class UpdateRestaurantUseCaseTest {
 
         var output = useCase.execute(input);
 
-        assertThat(output.name()).isEqualTo("New Burger");
+        assertThat(output.name().getValue()).isEqualTo("New Burger");
     }
 
     @Test
@@ -98,7 +98,7 @@ class UpdateRestaurantUseCaseTest {
 
         var output = useCase.execute(input);
 
-        assertThat(output.address()).isEqualTo("New Address");
+        assertThat(output.address().getValue()).isEqualTo("New Address");
     }
 
     @Test
@@ -116,7 +116,7 @@ class UpdateRestaurantUseCaseTest {
 
         var output = useCase.execute(input);
 
-        assertThat(output.cuisineType()).isEqualTo("Italian");
+        assertThat(output.cuisineType().getValue()).isEqualTo("Italian");
     }
 
     @Test
@@ -134,7 +134,7 @@ class UpdateRestaurantUseCaseTest {
 
         var output = useCase.execute(input);
 
-        assertThat(output.openingHours()).isEqualTo("Tue-Sun 11am-11pm");
+        assertThat(output.openingHours().getValue()).isEqualTo("Tue-Sun 11am-11pm");
     }
 
     @Test
@@ -154,10 +154,10 @@ class UpdateRestaurantUseCaseTest {
 
         var output = useCase.execute(input);
 
-        assertThat(output.name()).isEqualTo("La Bella Italia");
-        assertThat(output.address()).isEqualTo("456 Olive Ave");
-        assertThat(output.cuisineType()).isEqualTo("Italian");
-        assertThat(output.openingHours()).isEqualTo("Tue-Sun 11am-11pm");
+        assertThat(output.name().getValue()).isEqualTo("La Bella Italia");
+        assertThat(output.address().getValue()).isEqualTo("456 Olive Ave");
+        assertThat(output.cuisineType().getValue()).isEqualTo("Italian");
+        assertThat(output.openingHours().getValue()).isEqualTo("Tue-Sun 11am-11pm");
     }
 
     @Test
@@ -208,10 +208,10 @@ class UpdateRestaurantUseCaseTest {
         var output = useCase.execute(input);
 
         assertThat(output.id()).isEqualTo(restaurantId);
-        assertThat(output.name()).isEqualTo("La Bella Italia");
-        assertThat(output.address()).isEqualTo("456 Olive Ave");
-        assertThat(output.cuisineType()).isEqualTo("Italian");
-        assertThat(output.openingHours()).isEqualTo("Tue-Sun 11am-11pm");
+        assertThat(output.name().getValue()).isEqualTo("La Bella Italia");
+        assertThat(output.address().getValue()).isEqualTo("456 Olive Ave");
+        assertThat(output.cuisineType().getValue()).isEqualTo("Italian");
+        assertThat(output.openingHours().getValue()).isEqualTo("Tue-Sun 11am-11pm");
         assertThat(output.ownerId()).isEqualTo(ownerId);
     }
 

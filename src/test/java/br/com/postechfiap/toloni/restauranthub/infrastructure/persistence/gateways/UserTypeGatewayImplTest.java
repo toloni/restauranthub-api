@@ -1,15 +1,14 @@
-package br.com.postechfiap.toloni.restauranthub.adapters.gateways;
+package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
 import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
 import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserType;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeDescription;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeName;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserTypeJpaEntity;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.UserTypeGatewayImpl;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserTypeJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

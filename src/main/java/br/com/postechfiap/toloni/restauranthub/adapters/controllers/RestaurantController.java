@@ -1,7 +1,10 @@
 package br.com.postechfiap.toloni.restauranthub.adapters.controllers;
 
+import br.com.postechfiap.toloni.restauranthub.adapters.presenters.restaurant.RestaurantPresenter;
+import br.com.postechfiap.toloni.restauranthub.adapters.presenters.restaurant.RestaurantViewModel;
+import br.com.postechfiap.toloni.restauranthub.adapters.presenters.restaurant.TransferOwnershipViewModel;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.*;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
 
 /// Adapter that bridges any entry point to the [Restaurant] use cases.
 ///
@@ -16,25 +19,30 @@ public class RestaurantController {
     private final FindRestaurantByIdUseCase findRestaurantByIdUseCase;
     private final FindAllRestaurantsUseCase findAllRestaurantsUseCase;
     private final TransferRestaurantOwnershipUseCase transferRestaurantOwnershipUseCase;
+    private final RestaurantPresenter restaurantPresenter;
 
-    /// @param createRestaurantUseCase   the use case for creating a [Restaurant]
-    /// @param updateRestaurantUseCase   the use case for updating a [Restaurant]
-    /// @param deleteRestaurantUseCase   the use case for deleting a [Restaurant]
-    /// @param findRestaurantByIdUseCase the use case for finding a [Restaurant] by its identifier
-    /// @param findAllRestaurantsUseCase the use case for retrieving all [Restaurant] instances
+    /// @param createRestaurantUseCase            the use case for creating a [Restaurant]
+    /// @param updateRestaurantUseCase            the use case for updating a [Restaurant]
+    /// @param deleteRestaurantUseCase            the use case for deleting a [Restaurant]
+    /// @param findRestaurantByIdUseCase          the use case for finding a [Restaurant] by its identifier
+    /// @param findAllRestaurantsUseCase          the use case for retrieving all [Restaurant] instances
+    /// @param transferRestaurantOwnershipUseCase the use case for transferring [Restaurant] ownership
+    /// @param restaurantPresenter                the presenter that converts use case outputs to view models
     public RestaurantController(
             CreateRestaurantUseCase createRestaurantUseCase,
             UpdateRestaurantUseCase updateRestaurantUseCase,
             DeleteRestaurantUseCase deleteRestaurantUseCase,
             FindRestaurantByIdUseCase findRestaurantByIdUseCase,
             FindAllRestaurantsUseCase findAllRestaurantsUseCase,
-            TransferRestaurantOwnershipUseCase transferRestaurantOwnershipUseCase) {
+            TransferRestaurantOwnershipUseCase transferRestaurantOwnershipUseCase,
+            RestaurantPresenter restaurantPresenter) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.updateRestaurantUseCase = updateRestaurantUseCase;
         this.deleteRestaurantUseCase = deleteRestaurantUseCase;
         this.findRestaurantByIdUseCase = findRestaurantByIdUseCase;
         this.findAllRestaurantsUseCase = findAllRestaurantsUseCase;
         this.transferRestaurantOwnershipUseCase = transferRestaurantOwnershipUseCase;
+        this.restaurantPresenter = restaurantPresenter;
     }
 
     /// Creates a new [Restaurant].
@@ -43,8 +51,8 @@ public class RestaurantController {
     /// @return the [CreateRestaurantUseCase.Output] containing the created [Restaurant] data
     /// @throws AlreadyExistsException if a [Restaurant] with the given name already exists
     /// @throws NotFoundException      if no [User] is found with the given [UserId]
-    public CreateRestaurantUseCase.Output create(CreateRestaurantUseCase.Input input) {
-        return createRestaurantUseCase.execute(input);
+    public RestaurantViewModel create(CreateRestaurantUseCase.Input input) {
+        return restaurantPresenter.present(createRestaurantUseCase.execute(input));
     }
 
     /// Updates an existing [Restaurant].
@@ -53,8 +61,8 @@ public class RestaurantController {
     /// @return the [UpdateRestaurantUseCase.Output] containing the updated [Restaurant] data
     /// @throws NotFoundException      if no [Restaurant] or [User] is found
     /// @throws AlreadyExistsException if another [Restaurant] with the given name already exists
-    public UpdateRestaurantUseCase.Output update(UpdateRestaurantUseCase.Input input) {
-        return updateRestaurantUseCase.execute(input);
+    public RestaurantViewModel update(UpdateRestaurantUseCase.Input input) {
+        return restaurantPresenter.present(updateRestaurantUseCase.execute(input));
     }
 
     /// Deletes a [Restaurant] by its identifier.
@@ -69,18 +77,22 @@ public class RestaurantController {
     /// Finds a [Restaurant] by its identifier.
     ///
     /// @param input the [FindRestaurantByIdUseCase.Input] data
-    /// @return the [FindRestaurantByIdUseCase.Output] containing the found [Restaurant] data
+    /// @return the [RestaurantViewModel] containing the found [Restaurant] data
     /// @throws NotFoundException if no [Restaurant] is found with the given [RestaurantId]
-    public FindRestaurantByIdUseCase.Output findById(FindRestaurantByIdUseCase.Input input) {
-        return findRestaurantByIdUseCase.execute(input);
+    public RestaurantViewModel findById(FindRestaurantByIdUseCase.Input input) {
+        return restaurantPresenter.present(findRestaurantByIdUseCase.execute(input));
     }
 
     /// Retrieves a paginated list of [Restaurant] instances.
     ///
     /// @param input the [FindAllRestaurantsUseCase.Input] carrying the [PageRequest]
-    /// @return a [Page] of [FindAllRestaurantsUseCase.Output]
-    public Page<FindAllRestaurantsUseCase.Output> findAll(FindAllRestaurantsUseCase.Input input) {
-        return findAllRestaurantsUseCase.execute(input);
+    /// @return a [Page] of [RestaurantViewModel]
+    public Page<RestaurantViewModel> findAll(FindAllRestaurantsUseCase.Input input) {
+        var output = findAllRestaurantsUseCase.execute(input);
+        var content = output.content().stream()
+                .map(restaurantPresenter::present)
+                .toList();
+        return Page.of(content, output.pageNumber(), output.pageSize(), output.totalElements());
     }
 
     /// Transfers the ownership of a [Restaurant] to a new owner.
@@ -92,8 +104,8 @@ public class RestaurantController {
     /// @return the [TransferRestaurantOwnershipUseCase.Output] containing the new owner identifier
     /// @throws UnauthorizedException if the requester is not an admin or the new owner is not a restaurant owner
     /// @throws NotFoundException     if no [Restaurant] or [User] is found
-    public TransferRestaurantOwnershipUseCase.Output transferOwnership(
+    public TransferOwnershipViewModel transferOwnership(
             TransferRestaurantOwnershipUseCase.Input input) {
-        return transferRestaurantOwnershipUseCase.execute(input);
+        return restaurantPresenter.present(transferRestaurantOwnershipUseCase.execute(input));
     }
 }

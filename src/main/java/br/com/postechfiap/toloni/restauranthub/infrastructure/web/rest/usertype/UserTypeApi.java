@@ -1,6 +1,6 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.usertype;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -66,5 +66,5 @@ public interface UserTypeApi {
             @Parameter(description = "Field to sort by", example = "name") @RequestParam(required = false) String sort,
             @Parameter(description = "Sort direction (ASC or DESC)", example = "ASC") @RequestParam(required = false) String direction,
             @Parameter(description = "Field to filter by", example = "name") @RequestParam(required = false) String filter,
-            @Parameter(description = "Filter value", example = "pizza") @RequestParam(required = false) String filterValue);
+            @Parameter(description = "Filter value", example = "Customer") @RequestParam(required = false) String filterValue);
 }

@@ -1,10 +1,10 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.user;
 
 import br.com.postechfiap.toloni.restauranthub.adapters.controllers.UserController;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.user.DeleteUserUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.user.FindAllUsersUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.user.FindUserByIdUseCase;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,10 +72,10 @@ public class UserRestController implements UserApi {
                 new FindAllUsersUseCase.Input(PageRequest.of(page, size, filters, sorts))
         );
 
-        var content = output.getContent().stream()
+        var content = output.content().stream()
                 .map(UserResponse::from)
                 .toList();
 
-        return Page.of(content, output.getPageNumber(), output.getPageSize(), output.getTotalElements());
+        return Page.of(content, output.pageNumber(), output.pageSize(), output.totalElements());
     }
 }

@@ -1,9 +1,9 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.usertype;
 
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserType;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 
 /// Use case responsible for retrieving a [UserType] by its identifier.

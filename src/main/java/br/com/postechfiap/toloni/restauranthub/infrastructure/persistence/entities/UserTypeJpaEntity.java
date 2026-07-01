@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
+/// JPA entity representing a [UserType] in the persistence layer.
 @Entity
 @Table(name = "user_types")
 public class UserTypeJpaEntity {
@@ -21,6 +22,10 @@ public class UserTypeJpaEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    /// Creates a [UserTypeJpaEntity] from a [UserType] domain entity.
+    ///
+    /// @param userType the [UserType] domain entity to convert
+    /// @return the corresponding [UserTypeJpaEntity]
     public static UserTypeJpaEntity fromDomain(UserType userType) {
         var entity = new UserTypeJpaEntity();
         entity.id = userType.getId().getValue();
@@ -30,6 +35,9 @@ public class UserTypeJpaEntity {
         return entity;
     }
 
+    /// Converts this JPA entity to a [UserType] domain entity.
+    ///
+    /// @return the corresponding [UserType]
     public UserType toDomain() {
         return new UserType(
                 UserTypeId.of(id),
@@ -39,14 +47,19 @@ public class UserTypeJpaEntity {
         );
     }
 
+    /// Sets the identifier of this entity (used when creating a reference by ID).
+    ///
+    /// @param value the UUID to set
     public void setId(UUID value) {
         this.id = value;
     }
 
+    /// @return the unique identifier of this user type
     public UUID getId() {
         return id;
     }
 
+    /// @return the name of this user type
     public String getName() {
         return name;
     }

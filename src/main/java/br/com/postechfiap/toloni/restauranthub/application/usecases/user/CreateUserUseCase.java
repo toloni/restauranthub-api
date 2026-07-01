@@ -1,15 +1,15 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.user;
 
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.AlreadyExistsException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.DomainException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.user.User;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserName;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserPassword;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 
 /// Use case responsible for creating a new [User].

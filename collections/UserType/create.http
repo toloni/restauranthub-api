@@ -76,3 +76,4 @@ Content-Type: application/json
   "description": "User responsible for managing a restaurant.",
   "role": "RESTAURANT_OWNER"
 }
+

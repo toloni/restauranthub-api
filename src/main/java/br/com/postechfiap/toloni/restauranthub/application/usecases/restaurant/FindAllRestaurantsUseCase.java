@@ -1,9 +1,9 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 
 /// Use case responsible for retrieving a paginated list of [Restaurant] instances.
@@ -47,7 +47,7 @@ public class FindAllRestaurantsUseCase {
     public Page<Output> execute(Input input) {
         var page = restaurantGateway.findAllWithOwnerName(input.pageRequest());
 
-        var content = page.getContent()
+        var content = page.content()
                 .stream()
                 .map(enriched -> new Output(
                         enriched.restaurant().getId(),
@@ -60,6 +60,6 @@ public class FindAllRestaurantsUseCase {
                 ))
                 .toList();
 
-        return Page.of(content, page.getPageNumber(), page.getPageSize(), page.getTotalElements());
+        return Page.of(content, page.pageNumber(), page.pageSize(), page.totalElements());
     }
 }

@@ -1,9 +1,6 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.restaurant;
 
-import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.CreateRestaurantUseCase;
-import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.FindAllRestaurantsUseCase;
-import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.FindRestaurantByIdUseCase;
-import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.UpdateRestaurantUseCase;
+import br.com.postechfiap.toloni.restauranthub.adapters.presenters.restaurant.RestaurantViewModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.UUID;
@@ -18,54 +15,24 @@ import java.util.UUID;
 /// @param ownerId      the unique identifier of the owner user
 /// @param ownerName    the name of the owner user
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record RestaurantResponse(UUID id, String name, String address, String cuisineType,
-                                 String openingHours, UUID ownerId, String ownerName) {
+public record RestaurantResponse(
+        UUID id,
+        String name,
+        String address,
+        String cuisineType,
+        String openingHours,
+        UUID ownerId,
+        String ownerName) {
 
-    public static RestaurantResponse from(CreateRestaurantUseCase.Output output) {
+    public static RestaurantResponse from(RestaurantViewModel viewModel) {
         return new RestaurantResponse(
-                output.id().getValue(),
-                output.name(),
-                output.address(),
-                output.cuisineType(),
-                output.openingHours(),
-                output.ownerId().getValue(),
-                null
-        );
-    }
-
-    public static RestaurantResponse from(UpdateRestaurantUseCase.Output output) {
-        return new RestaurantResponse(
-                output.id().getValue(),
-                output.name(),
-                output.address(),
-                output.cuisineType(),
-                output.openingHours(),
-                output.ownerId().getValue(),
-                null
-        );
-    }
-
-    public static RestaurantResponse from(FindRestaurantByIdUseCase.Output output) {
-        return new RestaurantResponse(
-                output.id().getValue(),
-                output.name(),
-                output.address(),
-                output.cuisineType(),
-                output.openingHours(),
-                output.ownerId().getValue(),
-                output.ownerName()
-        );
-    }
-
-    public static RestaurantResponse from(FindAllRestaurantsUseCase.Output output) {
-        return new RestaurantResponse(
-                output.id().getValue(),
-                output.name(),
-                output.address(),
-                output.cuisineType(),
-                output.openingHours(),
-                output.ownerId().getValue(),
-                output.ownerName()
+                viewModel.id(),
+                viewModel.name(),
+                viewModel.address(),
+                viewModel.cuisineType(),
+                viewModel.openingHours(),
+                viewModel.ownerId(),
+                viewModel.ownerName()
         );
     }
 }

@@ -1,18 +1,18 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways;
 
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
-import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItem;
 import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItem;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItemWithRestaurantName;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.valueobject.MenuItemId;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.valueobject.MenuItemName;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
-import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.MenuItemJpaEntity;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.MenuItemJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.JpaSpecificationBuilder;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
 
 import java.util.Optional;
 
@@ -25,11 +25,14 @@ public class MenuItemGatewayImpl implements MenuItemGateway {
     private final MenuItemJpaRepository jpaRepository;
     private final RestaurantJpaRepository restaurantJpaRepository;
 
+    /// @param jpaRepository           the Spring Data JPA repository for [MenuItemJpaEntity]
+    /// @param restaurantJpaRepository the Spring Data JPA repository for [RestaurantJpaEntity]
     public MenuItemGatewayImpl(MenuItemJpaRepository jpaRepository,
                                RestaurantJpaRepository restaurantJpaRepository) {
         this.jpaRepository = jpaRepository;
         this.restaurantJpaRepository = restaurantJpaRepository;
     }
+
     /// {@inheritDoc}
     @Override
     public MenuItem save(MenuItem menuItem) {

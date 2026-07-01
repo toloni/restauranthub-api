@@ -1,17 +1,16 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
+import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.*;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.authorization.AuthorizationService;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.AlreadyExistsException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.DomainException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.UnauthorizedException;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
 
 /// Use case responsible for creating a new [Restaurant].
 ///
@@ -69,8 +68,8 @@ public class CreateRestaurantUseCase {
     /// @param cuisineType  the cuisine type of the created restaurant
     /// @param openingHours the opening hours of the created restaurant
     /// @param ownerId      the [UserId] of the owner of the created restaurant
-    public record Output(RestaurantId id, String name, String address, String cuisineType, String openingHours,
-                         UserId ownerId) {
+    public record Output(RestaurantId id, RestaurantName name, RestaurantAddress address,
+                         RestaurantCuisineType cuisineType, RestaurantOpeningHours openingHours, UserId ownerId) {
     }
 
     /// Executes the use case with the given input.
@@ -101,10 +100,10 @@ public class CreateRestaurantUseCase {
 
         return new Output(
                 saved.getId(),
-                saved.getName().getValue(),
-                saved.getAddress().getValue(),
-                saved.getCuisineType().getValue(),
-                saved.getOpeningHours().getValue(),
+                saved.getName(),
+                saved.getAddress(),
+                saved.getCuisineType(),
+                saved.getOpeningHours(),
                 saved.getOwnerId()
         );
     }

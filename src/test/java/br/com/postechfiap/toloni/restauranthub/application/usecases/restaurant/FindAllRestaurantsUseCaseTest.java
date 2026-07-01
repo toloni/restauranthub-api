@@ -1,13 +1,13 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageSort;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantWithOwnerName;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.*;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageFilter;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageSort;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,10 +77,10 @@ class FindAllRestaurantsUseCaseTest {
         var output = useCase.execute(new FindAllRestaurantsUseCase.Input(pageRequest));
 
         assertThat(output).isNotNull();
-        assertThat(output.getContent()).hasSize(2);
-        assertThat(output.getTotalElements()).isEqualTo(2L);
-        assertThat(output.getPageNumber()).isZero();
-        assertThat(output.getPageSize()).isEqualTo(10);
+        assertThat(output.content()).hasSize(2);
+        assertThat(output.totalElements()).isEqualTo(2L);
+        assertThat(output.pageNumber()).isZero();
+        assertThat(output.pageSize()).isEqualTo(10);
     }
 
     @Test
@@ -94,7 +94,7 @@ class FindAllRestaurantsUseCaseTest {
 
         var output = useCase.execute(new FindAllRestaurantsUseCase.Input(pageRequest));
 
-        var first = output.getContent().get(0);
+        var first = output.content().get(0);
         assertThat(first.id()).isEqualTo(burgerRestaurant.getId());
         assertThat(first.name()).isEqualTo(burgerRestaurant.getName().getValue());
         assertThat(first.address()).isEqualTo(burgerRestaurant.getAddress().getValue());
@@ -118,8 +118,8 @@ class FindAllRestaurantsUseCaseTest {
 
         var output = useCase.execute(new FindAllRestaurantsUseCase.Input(pageRequest));
 
-        assertThat(output.getContent().get(0).ownerName()).isEqualTo("John Doe");
-        assertThat(output.getContent().get(1).ownerName()).isEqualTo("Jane Doe");
+        assertThat(output.content().get(0).ownerName()).isEqualTo("John Doe");
+        assertThat(output.content().get(1).ownerName()).isEqualTo("Jane Doe");
     }
 
     @Test
@@ -132,8 +132,8 @@ class FindAllRestaurantsUseCaseTest {
 
         var output = useCase.execute(new FindAllRestaurantsUseCase.Input(pageRequest));
 
-        assertThat(output.getContent()).isEmpty();
-        assertThat(output.getTotalElements()).isZero();
+        assertThat(output.content()).isEmpty();
+        assertThat(output.totalElements()).isZero();
         assertThat(output.isEmpty()).isTrue();
     }
 
@@ -148,9 +148,9 @@ class FindAllRestaurantsUseCaseTest {
 
         var output = useCase.execute(new FindAllRestaurantsUseCase.Input(pageRequest));
 
-        assertThat(output.getPageNumber()).isEqualTo(1);
-        assertThat(output.getPageSize()).isEqualTo(5);
-        assertThat(output.getTotalElements()).isEqualTo(6L);
+        assertThat(output.pageNumber()).isEqualTo(1);
+        assertThat(output.pageSize()).isEqualTo(5);
+        assertThat(output.totalElements()).isEqualTo(6L);
         assertThat(output.getTotalPages()).isEqualTo(2);
     }
 
@@ -200,8 +200,8 @@ class FindAllRestaurantsUseCaseTest {
 
         var output = useCase.execute(new FindAllRestaurantsUseCase.Input(pageRequest));
 
-        assertThat(output.getContent()).hasSize(1);
-        assertThat(output.getContent().get(0).name()).isEqualTo("The Great Burger");
+        assertThat(output.content()).hasSize(1);
+        assertThat(output.content().get(0).name()).isEqualTo("The Great Burger");
     }
 
     @Test
@@ -220,7 +220,7 @@ class FindAllRestaurantsUseCaseTest {
 
         var output = useCase.execute(new FindAllRestaurantsUseCase.Input(pageRequest));
 
-        assertThat(output.getContent().get(0).name()).isEqualTo("La Bella Italia");
-        assertThat(output.getContent().get(1).name()).isEqualTo("The Great Burger");
+        assertThat(output.content().get(0).name()).isEqualTo("La Bella Italia");
+        assertThat(output.content().get(1).name()).isEqualTo("The Great Burger");
     }
 }

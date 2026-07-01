@@ -1,9 +1,9 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.usertype;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 
 /// Use case responsible for retrieving a paginated list of [UserType] instances.
@@ -43,7 +43,7 @@ public class FindAllUserTypesUseCase {
     public Page<Output> execute(Input input) {
         var page = userTypeGateway.findAll(input.pageRequest());
 
-        var content = page.getContent()
+        var content = page.content()
                 .stream()
                 .map(userType -> new Output(
                         userType.getId(),
@@ -53,6 +53,6 @@ public class FindAllUserTypesUseCase {
                 ))
                 .toList();
 
-        return Page.of(content, page.getPageNumber(), page.getPageSize(), page.getTotalElements());
+        return Page.of(content, page.pageNumber(), page.pageSize(), page.totalElements());
     }
 }

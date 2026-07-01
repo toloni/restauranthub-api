@@ -1,11 +1,12 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.config;
 
 import br.com.postechfiap.toloni.restauranthub.adapters.controllers.MenuItemController;
-import br.com.postechfiap.toloni.restauranthub.adapters.gateways.MenuItemGatewayImpl;
+import br.com.postechfiap.toloni.restauranthub.adapters.presenters.menuitem.MenuItemPresenter;
+import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem.*;
-import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItemGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.MenuItemGatewayImpl;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.MenuItemJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
 import org.springframework.context.annotation.Bean;
@@ -53,18 +54,25 @@ public class MenuItemConfig {
     }
 
     @Bean
+    public MenuItemPresenter menuItemPresenter() {
+        return new MenuItemPresenter();
+    }
+
+    @Bean
     public MenuItemController menuItemController(
             CreateMenuItemUseCase createMenuItemUseCase,
             UpdateMenuItemUseCase updateMenuItemUseCase,
             DeleteMenuItemUseCase deleteMenuItemUseCase,
             FindMenuItemByIdUseCase findMenuItemByIdUseCase,
-            FindAllMenuItemsUseCase findAllMenuItemsUseCase) {
+            FindAllMenuItemsUseCase findAllMenuItemsUseCase,
+            MenuItemPresenter menuItemPresenter) {
         return new MenuItemController(
                 createMenuItemUseCase,
                 updateMenuItemUseCase,
                 deleteMenuItemUseCase,
                 findMenuItemByIdUseCase,
-                findAllMenuItemsUseCase
+                findAllMenuItemsUseCase,
+                menuItemPresenter
         );
     }
 }

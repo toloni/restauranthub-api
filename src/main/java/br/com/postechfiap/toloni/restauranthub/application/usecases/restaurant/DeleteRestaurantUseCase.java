@@ -1,9 +1,9 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
-import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItemGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.authorization.AuthorizationService;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.UnauthorizedException;
@@ -45,7 +45,8 @@ public class DeleteRestaurantUseCase {
     ///
     /// @param id      the [RestaurantId] of the restaurant to delete
     /// @param ownerId the [UserId] of the authenticated user
-    public record Input(RestaurantId id, UserId ownerId) {}
+    public record Input(RestaurantId id, UserId ownerId) {
+    }
 
     /// Executes the use case with the given input.
     ///

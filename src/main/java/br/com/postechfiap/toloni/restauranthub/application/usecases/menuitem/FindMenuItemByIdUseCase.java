@@ -1,7 +1,7 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem;
 
+import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItem;
-import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItemGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.valueobject.MenuItemId;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
@@ -44,7 +44,8 @@ public class FindMenuItemByIdUseCase {
     /// @param restaurantId the [RestaurantId] of the restaurant this item belongs to
     public record Output(MenuItemId id, String name, String description, BigDecimal price,
                          Currency currency, boolean dineInOnly, String imagePath,
-                         RestaurantId restaurantId, String restaurantName) {}
+                         RestaurantId restaurantId, String restaurantName) {
+    }
 
     /// Executes the use case with the given input.
     ///

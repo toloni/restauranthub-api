@@ -1,8 +1,7 @@
-package br.com.postechfiap.toloni.restauranthub.adapters.shared;
+package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared;
 
 import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.application.pagination.PageSort;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

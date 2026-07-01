@@ -27,6 +27,11 @@ public class RestaurantJpaEntity {
     @JoinColumn(name = "owner_id")
     private UserJpaEntity owner;
 
+    /// Creates a [RestaurantJpaEntity] from a [Restaurant] domain entity.
+    ///
+    /// @param restaurant the [Restaurant] domain entity to convert
+    /// @param owner      the [UserJpaEntity] reference for the owner
+    /// @return the corresponding [RestaurantJpaEntity]
     public static RestaurantJpaEntity fromDomain(Restaurant restaurant, UserJpaEntity owner) {
         var entity = new RestaurantJpaEntity();
         entity.id = restaurant.getId().getValue();
@@ -38,6 +43,9 @@ public class RestaurantJpaEntity {
         return entity;
     }
 
+    /// Converts this JPA entity to a [Restaurant] domain entity.
+    ///
+    /// @return the corresponding [Restaurant]
     public Restaurant toDomain() {
         return new Restaurant(
                 RestaurantId.of(id),
@@ -49,14 +57,17 @@ public class RestaurantJpaEntity {
         );
     }
 
+    /// @return the unique identifier of this restaurant
     public UUID getId() {
         return id;
     }
 
+    /// @return the name of this restaurant
     public String getName() {
         return name;
     }
 
+    /// @return the [UserJpaEntity] that owns this restaurant
     public UserJpaEntity getOwner() {
         return owner;
     }

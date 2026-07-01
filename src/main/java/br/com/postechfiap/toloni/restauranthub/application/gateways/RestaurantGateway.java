@@ -1,11 +1,11 @@
 package br.com.postechfiap.toloni.restauranthub.application.gateways;
 
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantWithOwnerName;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantName;
-import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 
 import java.util.Optional;

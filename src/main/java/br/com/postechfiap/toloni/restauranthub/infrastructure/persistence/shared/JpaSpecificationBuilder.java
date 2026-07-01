@@ -1,6 +1,6 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageFilter;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -29,12 +29,12 @@ public final class JpaSpecificationBuilder {
 
     private static <T> Specification<T> toSpecification(PageFilter filter) {
         return (root, query, cb) -> {
-            var path = root.get(filter.getField());
+            var path = root.get(filter.field());
             var javaType = path.getJavaType();
 
             if (javaType.equals(UUID.class)) {
                 try {
-                    return cb.equal(path, UUID.fromString(filter.getValue()));
+                    return cb.equal(path, UUID.fromString(filter.value()));
                 } catch (IllegalArgumentException e) {
                     return cb.conjunction();
                 }
@@ -43,7 +43,7 @@ public final class JpaSpecificationBuilder {
             if (javaType.isEnum()) {
                 try {
                     @SuppressWarnings("unchecked")
-                    var enumValue = Enum.valueOf((Class<Enum>) javaType, filter.getValue().toUpperCase());
+                    var enumValue = Enum.valueOf((Class<Enum>) javaType, filter.value().toUpperCase());
                     return cb.equal(path, enumValue);
                 } catch (IllegalArgumentException e) {
                     return cb.conjunction();
@@ -51,7 +51,7 @@ public final class JpaSpecificationBuilder {
             }
 
             return cb.like(cb.lower(path.as(String.class)),
-                    "%" + filter.getValue().toLowerCase() + "%");
+                    "%" + filter.value().toLowerCase() + "%");
         };
     }
 }

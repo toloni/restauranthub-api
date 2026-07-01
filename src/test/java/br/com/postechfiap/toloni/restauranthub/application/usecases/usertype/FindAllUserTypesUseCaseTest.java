@@ -1,12 +1,12 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.usertype;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageFilter;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageSort;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageFilter;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageSort;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserType;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeDescription;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeName;
@@ -68,10 +68,10 @@ class FindAllUserTypesUseCaseTest {
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
         assertThat(output).isNotNull();
-        assertThat(output.getContent()).hasSize(2);
-        assertThat(output.getTotalElements()).isEqualTo(2L);
-        assertThat(output.getPageNumber()).isZero();
-        assertThat(output.getPageSize()).isEqualTo(10);
+        assertThat(output.content()).hasSize(2);
+        assertThat(output.totalElements()).isEqualTo(2L);
+        assertThat(output.pageNumber()).isZero();
+        assertThat(output.pageSize()).isEqualTo(10);
     }
 
     @Test
@@ -84,7 +84,7 @@ class FindAllUserTypesUseCaseTest {
 
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
-        var first = output.getContent().get(0);
+        var first = output.content().get(0);
         assertThat(first.id()).isEqualTo(restaurantOwnerType.getId());
         assertThat(first.name()).isEqualTo(restaurantOwnerType.getName().getValue());
         assertThat(first.description()).isEqualTo(restaurantOwnerType.getDescription().getValue());
@@ -101,8 +101,8 @@ class FindAllUserTypesUseCaseTest {
 
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
-        assertThat(output.getContent()).isEmpty();
-        assertThat(output.getTotalElements()).isZero();
+        assertThat(output.content()).isEmpty();
+        assertThat(output.totalElements()).isZero();
         assertThat(output.isEmpty()).isTrue();
     }
 
@@ -116,9 +116,9 @@ class FindAllUserTypesUseCaseTest {
 
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
-        assertThat(output.getPageNumber()).isEqualTo(1);
-        assertThat(output.getPageSize()).isEqualTo(5);
-        assertThat(output.getTotalElements()).isEqualTo(6L);
+        assertThat(output.pageNumber()).isEqualTo(1);
+        assertThat(output.pageSize()).isEqualTo(5);
+        assertThat(output.totalElements()).isEqualTo(6L);
         assertThat(output.getTotalPages()).isEqualTo(2);
     }
 
@@ -163,8 +163,8 @@ class FindAllUserTypesUseCaseTest {
 
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
-        assertThat(output.getContent()).hasSize(1);
-        assertThat(output.getContent().get(0).name()).isEqualTo("Restaurant Owner");
+        assertThat(output.content()).hasSize(1);
+        assertThat(output.content().get(0).name()).isEqualTo("Restaurant Owner");
     }
 
     @Test
@@ -179,8 +179,8 @@ class FindAllUserTypesUseCaseTest {
 
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
-        assertThat(output.getContent()).hasSize(2);
-        assertThat(output.getContent().get(0).name()).isEqualTo("Customer");
-        assertThat(output.getContent().get(1).name()).isEqualTo("Restaurant Owner");
+        assertThat(output.content()).hasSize(2);
+        assertThat(output.content().get(0).name()).isEqualTo("Customer");
+        assertThat(output.content().get(1).name()).isEqualTo("Restaurant Owner");
     }
 }

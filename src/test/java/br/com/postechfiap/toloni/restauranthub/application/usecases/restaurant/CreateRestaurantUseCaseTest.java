@@ -1,22 +1,22 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
+import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.*;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.authorization.AuthorizationService;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.AlreadyExistsException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.DomainException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.UnauthorizedException;
 import br.com.postechfiap.toloni.restauranthub.domain.user.User;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserName;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserPassword;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserType;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeDescription;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeName;
@@ -108,10 +108,10 @@ class CreateRestaurantUseCaseTest {
 
         assertThat(output).isNotNull();
         assertThat(output.id()).isNotNull();
-        assertThat(output.name()).isEqualTo(input.name());
-        assertThat(output.address()).isEqualTo(input.address());
-        assertThat(output.cuisineType()).isEqualTo(input.cuisineType());
-        assertThat(output.openingHours()).isEqualTo(input.openingHours());
+        assertThat(output.name().getValue()).isEqualTo(input.name());
+        assertThat(output.address().getValue()).isEqualTo(input.address());
+        assertThat(output.cuisineType().getValue()).isEqualTo(input.cuisineType());
+        assertThat(output.openingHours().getValue()).isEqualTo(input.openingHours());
         assertThat(output.ownerId()).isEqualTo(ownerId);
     }
 

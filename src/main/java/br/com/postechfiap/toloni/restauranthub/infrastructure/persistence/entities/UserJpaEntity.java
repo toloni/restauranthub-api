@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
+/// JPA entity representing a [User] in the persistence layer.
 @Entity
 @Table(name = "users")
 public class UserJpaEntity {
@@ -27,6 +28,10 @@ public class UserJpaEntity {
     @JoinColumn(name = "user_type_id")
     private UserTypeJpaEntity userType;
 
+    /// Creates a [UserJpaEntity] from a [User] domain entity.
+    ///
+    /// @param user the [User] domain entity to convert
+    /// @return the corresponding [UserJpaEntity]
     public static UserJpaEntity fromDomain(User user) {
         var entity = new UserJpaEntity();
         entity.id = user.getId().getValue();
@@ -39,6 +44,9 @@ public class UserJpaEntity {
         return entity;
     }
 
+    /// Converts this JPA entity to a [User] domain entity.
+    ///
+    /// @return the corresponding [User]
     public User toDomain() {
         return new User(
                 UserId.of(id),
@@ -49,14 +57,17 @@ public class UserJpaEntity {
         );
     }
 
+    /// @return the associated [UserTypeJpaEntity]
     public UserTypeJpaEntity getUserType() {
         return userType;
     }
 
+    /// @return the unique identifier of this user
     public UUID getId() {
         return id;
     }
 
+    /// @return the name of this user
     public String getName() {
         return name;
     }

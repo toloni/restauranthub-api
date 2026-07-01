@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
 
     /// Handles [NotFoundException] — resource not found.
     ///
-    /// @return a [ProblemDetail] with status \404 Not Found``
+    /// @return a [ProblemDetail] with status `404 Not Found`
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleNotFoundException(NotFoundException ex, HttpServletRequest request) {
         log.warn("Resource not found: {}", ex.getMessage());
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
 
     /// Handles [AlreadyExistsException] — resource already exists.
     ///
-    /// @return a [ProblemDetail] with status \409 Conflict``
+    /// @return a [ProblemDetail] with status `409 Conflict`
     @ExceptionHandler(AlreadyExistsException.class)
     public ProblemDetail handleAlreadyExistsException(AlreadyExistsException ex, HttpServletRequest request) {
         log.warn("Resource already exists: {}", ex.getMessage());
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
 
     /// Handles [EntityInUseException] — resource is in use and cannot be deleted.
     ///
-    /// @return a [ProblemDetail] with status \409 Conflict``
+    /// @return a [ProblemDetail] with status `409 Conflict`
     @ExceptionHandler(EntityInUseException.class)
     public ProblemDetail handleEntityInUseException(EntityInUseException ex, HttpServletRequest request) {
         log.warn("Entity in use: {}", ex.getMessage());
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
 
     /// Handles [UnauthorizedException] — requester does not have permission.
     ///
-    /// @return a [ProblemDetail] with status \403 Forbidden``
+    /// @return a [ProblemDetail] with status `403 Forbidden`
     @ExceptionHandler(UnauthorizedException.class)
     public ProblemDetail handleUnauthorizedException(UnauthorizedException ex, HttpServletRequest request) {
         log.warn("Unauthorized access: {}", ex.getMessage());
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
 
     /// Handles [HttpMessageNotReadableException] — malformed JSON or invalid field type.
     ///
-    /// @return a [ProblemDetail] with status \400 Bad Request``
+    /// @return a [ProblemDetail] with status `400 Bad Request`
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, HttpServletRequest request) {
         log.warn("Invalid request body: cause={}, message={}",
@@ -118,7 +118,7 @@ public class GlobalExceptionHandler {
 
     /// Handles [Exception] — unexpected errors.
     ///
-    /// @return a [ProblemDetail] with status \500 Internal Server Error``
+    /// @return a [ProblemDetail] with status `500 Internal Server Error`
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex, HttpServletRequest request) {
         log.error("Unexpected error: {}", ex.getMessage(), ex);
@@ -128,6 +128,9 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    /// Handles [InvalidDataAccessApiUsageException] — invalid filter field reference.
+    ///
+    /// @return a [ProblemDetail] with status `400 Bad Request`
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
     public ProblemDetail handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException ex, HttpServletRequest request) {
         log.warn("Invalid filter field: {}", ex.getMessage());
@@ -137,6 +140,9 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    /// Handles [IllegalArgumentException] — invalid argument value.
+    ///
+    /// @return a [ProblemDetail] with status `400 Bad Request`
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
         log.warn("Invalid argument: {}", ex.getMessage());
@@ -146,6 +152,9 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    /// Handles [MissingRequestHeaderException] — required HTTP header not provided.
+    ///
+    /// @return a [ProblemDetail] with status `400 Bad Request`
     @ExceptionHandler(MissingRequestHeaderException.class)
     public ProblemDetail handleMissingRequestHeaderException(MissingRequestHeaderException ex, HttpServletRequest request) {
         log.warn("Missing request header: {}", ex.getHeaderName());
@@ -156,6 +165,9 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    /// Handles [PropertyReferenceException] — invalid sort field name.
+    ///
+    /// @return a [ProblemDetail] with status `400 Bad Request`
     @ExceptionHandler(PropertyReferenceException.class)
     public ProblemDetail handlePropertyReferenceException(
             PropertyReferenceException ex, HttpServletRequest request) {
@@ -167,6 +179,9 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    /// Handles [HttpRequestMethodNotSupportedException] — HTTP method not allowed for this endpoint.
+    ///
+    /// @return a [ProblemDetail] with status `405 Method Not Allowed`
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ProblemDetail handleHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
@@ -178,6 +193,10 @@ public class GlobalExceptionHandler {
         problem.setInstance(URI.create(request.getRequestURI()));
         return problem;
     }
+
+    /// Handles [NoResourceFoundException] — no static or dynamic resource at the requested path.
+    ///
+    /// @return a [ProblemDetail] with status `404 Not Found`
     @ExceptionHandler(NoResourceFoundException.class)
     public ProblemDetail handleNoResourceFoundException(
             NoResourceFoundException ex, HttpServletRequest request) {

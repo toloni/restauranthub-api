@@ -1,9 +1,9 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem;
 
-import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItemGateway;
+import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.valueobject.MenuItemId;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.authorization.AuthorizationService;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.UnauthorizedException;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;

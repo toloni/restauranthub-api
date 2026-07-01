@@ -1,8 +1,8 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.user;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 
@@ -33,7 +33,8 @@ public class FindAllUsersUseCase {
     /// @param name       the name of the user
     /// @param email      the email of the user
     /// @param userTypeId the [UserTypeId] of the user
-    public record Output(UserId id, String name, String email, UserTypeId userTypeId, String userTypeName) {}
+    public record Output(UserId id, String name, String email, UserTypeId userTypeId, String userTypeName) {
+    }
 
 
     /// Executes the use case with the given input.
@@ -43,7 +44,7 @@ public class FindAllUsersUseCase {
     public Page<Output> execute(Input input) {
         var page = userGateway.findAllWithUserTypeName(input.pageRequest());
 
-        var content = page.getContent()
+        var content = page.content()
                 .stream()
                 .map(enriched -> new Output(
                         enriched.user().getId(),
@@ -54,6 +55,6 @@ public class FindAllUsersUseCase {
                 ))
                 .toList();
 
-        return Page.of(content, page.getPageNumber(), page.getPageSize(), page.getTotalElements());
+        return Page.of(content, page.pageNumber(), page.pageSize(), page.totalElements());
     }
 }

@@ -1,11 +1,11 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem;
 
+import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.PageRequest;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItem;
-import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItemGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.valueobject.MenuItemId;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.PageRequest;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -44,7 +44,8 @@ public class FindAllMenuItemsUseCase {
     /// @param restaurantId the [RestaurantId] of the restaurant this item belongs to
     public record Output(MenuItemId id, String name, String description, BigDecimal price,
                          Currency currency, boolean dineInOnly, String imagePath,
-                         RestaurantId restaurantId, String restaurantName) {}
+                         RestaurantId restaurantId, String restaurantName) {
+    }
 
 
     /// Executes the use case with the given input.
@@ -54,7 +55,7 @@ public class FindAllMenuItemsUseCase {
     public Page<Output> execute(Input input) {
         var page = menuItemGateway.findAllWithRestaurantName(input.restaurantId(), input.pageRequest());
 
-        var content = page.getContent()
+        var content = page.content()
                 .stream()
                 .map(enriched -> new Output(
                         enriched.menuItem().getId(),
@@ -69,6 +70,6 @@ public class FindAllMenuItemsUseCase {
                 ))
                 .toList();
 
-        return Page.of(content, page.getPageNumber(), page.getPageSize(), page.getTotalElements());
+        return Page.of(content, page.pageNumber(), page.pageSize(), page.totalElements());
     }
 }

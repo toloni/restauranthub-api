@@ -38,7 +38,9 @@ public final class UserPassword {
     }
 
     /// @return the underlying [String] value
-    public String getValue() { return value; }
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -48,9 +50,13 @@ public final class UserPassword {
     }
 
     @Override
-    public int hashCode() { return Objects.hash(value); }
+    public int hashCode() {
+        return Objects.hash(value);
+    }
 
     /// @return `***` to prevent accidental exposure of the password
     @Override
-    public String toString() { return "***"; }
+    public String toString() {
+        return "***";
+    }
 }

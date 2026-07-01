@@ -1,8 +1,8 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.usertype;
 
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 
 /// Use case responsible for deleting a [UserType] by its identifier.

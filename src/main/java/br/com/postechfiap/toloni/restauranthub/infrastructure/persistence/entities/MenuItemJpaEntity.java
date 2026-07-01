@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.UUID;
 
+/// JPA entity representing a [MenuItem] in the persistence layer.
 @Entity
 @Table(name = "menu_items")
 public class MenuItemJpaEntity {
@@ -33,6 +34,11 @@ public class MenuItemJpaEntity {
     @JoinColumn(name = "restaurant_id")
     private RestaurantJpaEntity restaurant;
 
+    /// Creates a [MenuItemJpaEntity] from a [MenuItem] domain entity.
+    ///
+    /// @param menuItem   the [MenuItem] domain entity to convert
+    /// @param restaurant the [RestaurantJpaEntity] reference for the owning restaurant
+    /// @return the corresponding [MenuItemJpaEntity]
     public static MenuItemJpaEntity fromDomain(MenuItem menuItem, RestaurantJpaEntity restaurant) {
         var entity = new MenuItemJpaEntity();
         entity.id = menuItem.getId().getValue();
@@ -46,6 +52,9 @@ public class MenuItemJpaEntity {
         return entity;
     }
 
+    /// Converts this JPA entity to a [MenuItem] domain entity.
+    ///
+    /// @return the corresponding [MenuItem]
     public MenuItem toDomain() {
         return new MenuItem(
                 MenuItemId.of(id),
@@ -58,6 +67,7 @@ public class MenuItemJpaEntity {
         );
     }
 
+    /// @return the [RestaurantJpaEntity] this menu item belongs to
     public RestaurantJpaEntity getRestaurant() {
         return restaurant;
     }

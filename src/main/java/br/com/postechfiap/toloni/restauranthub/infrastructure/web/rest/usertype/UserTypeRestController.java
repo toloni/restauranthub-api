@@ -1,10 +1,10 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.usertype;
 
 import br.com.postechfiap.toloni.restauranthub.adapters.controllers.UserTypeController;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.usertype.DeleteUserTypeUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.usertype.FindAllUserTypesUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.usertype.FindUserTypeByIdUseCase;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,10 +67,10 @@ public class UserTypeRestController implements UserTypeApi {
         var output = userTypeController.findAll(
                 new FindAllUserTypesUseCase.Input(PageRequest.of(page, size, filters, sorts)));
 
-        var content = output.getContent().stream()
+        var content = output.content().stream()
                 .map(UserTypeResponse::from)
                 .toList();
 
-        return Page.of(content, output.getPageNumber(), output.getPageSize(), output.getTotalElements());
+        return Page.of(content, output.pageNumber(), output.pageSize(), output.totalElements());
     }
 }

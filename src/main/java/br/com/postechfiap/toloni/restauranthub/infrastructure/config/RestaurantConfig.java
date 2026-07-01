@@ -1,13 +1,14 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.config;
 
 import br.com.postechfiap.toloni.restauranthub.adapters.controllers.RestaurantController;
-import br.com.postechfiap.toloni.restauranthub.adapters.gateways.RestaurantGatewayImpl;
+import br.com.postechfiap.toloni.restauranthub.adapters.presenters.restaurant.RestaurantPresenter;
+import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.*;
-import br.com.postechfiap.toloni.restauranthub.domain.menuitem.MenuItemGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.authorization.AuthorizationService;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.RestaurantGatewayImpl;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserJpaRepository;
 import org.springframework.context.annotation.Bean;
@@ -63,20 +64,27 @@ public class RestaurantConfig {
     }
 
     @Bean
+    public RestaurantPresenter restaurantPresenter() {
+        return new RestaurantPresenter();
+    }
+
+    @Bean
     public RestaurantController restaurantController(
             CreateRestaurantUseCase createRestaurantUseCase,
             UpdateRestaurantUseCase updateRestaurantUseCase,
             DeleteRestaurantUseCase deleteRestaurantUseCase,
             FindRestaurantByIdUseCase findRestaurantByIdUseCase,
             FindAllRestaurantsUseCase findAllRestaurantsUseCase,
-            TransferRestaurantOwnershipUseCase transferRestaurantOwnershipUseCase) {
+            TransferRestaurantOwnershipUseCase transferRestaurantOwnershipUseCase,
+            RestaurantPresenter restaurantPresenter) {
         return new RestaurantController(
                 createRestaurantUseCase,
                 updateRestaurantUseCase,
                 deleteRestaurantUseCase,
                 findRestaurantByIdUseCase,
                 findAllRestaurantsUseCase,
-                transferRestaurantOwnershipUseCase
+                transferRestaurantOwnershipUseCase,
+                restaurantPresenter
         );
     }
 }

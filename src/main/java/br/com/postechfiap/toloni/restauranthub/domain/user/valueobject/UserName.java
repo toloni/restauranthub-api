@@ -33,7 +33,9 @@ public final class UserName {
     }
 
     /// @return the underlying [String] value
-    public String getValue() { return value; }
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -43,8 +45,12 @@ public final class UserName {
     }
 
     @Override
-    public int hashCode() { return Objects.hash(value); }
+    public int hashCode() {
+        return Objects.hash(value);
+    }
 
     @Override
-    public String toString() { return value; }
+    public String toString() {
+        return value;
+    }
 }

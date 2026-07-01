@@ -1,6 +1,6 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.user;
 
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.Page;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

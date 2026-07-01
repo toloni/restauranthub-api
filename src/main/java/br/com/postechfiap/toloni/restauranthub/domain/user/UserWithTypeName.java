@@ -7,4 +7,5 @@ package br.com.postechfiap.toloni.restauranthub.domain.user;
 ///
 /// @param user         the [User] entity
 /// @param userTypeName the name of the [UserType]
-public record UserWithTypeName(User user, String userTypeName) {}
+public record UserWithTypeName(User user, String userTypeName) {
+}

@@ -1,10 +1,11 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.config;
 
 import br.com.postechfiap.toloni.restauranthub.adapters.controllers.UserTypeController;
-import br.com.postechfiap.toloni.restauranthub.adapters.gateways.UserTypeGatewayImpl;
+import br.com.postechfiap.toloni.restauranthub.adapters.presenters.usertype.UserTypePresenter;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.usertype.*;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserTypeGateway;
+import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.UserTypeGatewayImpl;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserTypeJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class UserTypeConfig {
 
     @Bean
-    public UserTypeGatewayImpl userTypeRepositoryImpl(UserTypeJpaRepository userTypeJpaRepository) {
+    public UserTypeGateway userTypeGateway(UserTypeJpaRepository userTypeJpaRepository) {
         return new UserTypeGatewayImpl(userTypeJpaRepository);
     }
 
@@ -43,19 +44,26 @@ public class UserTypeConfig {
     }
 
     @Bean
+    public UserTypePresenter userTypePresenter() {
+        return new UserTypePresenter();
+    }
+
+    @Bean
     public UserTypeController userTypeController(
             CreateUserTypeUseCase createUserTypeUseCase,
             UpdateUserTypeUseCase updateUserTypeUseCase,
             DeleteUserTypeUseCase deleteUserTypeUseCase,
             FindUserTypeByIdUseCase findUserTypeByIdUseCase,
-            FindAllUserTypesUseCase findAllUserTypesUseCase
+            FindAllUserTypesUseCase findAllUserTypesUseCase,
+            UserTypePresenter userTypePresenter
     ) {
         return new UserTypeController(
                 createUserTypeUseCase,
                 updateUserTypeUseCase,
                 deleteUserTypeUseCase,
                 findUserTypeByIdUseCase,
-                findAllUserTypesUseCase);
+                findAllUserTypesUseCase,
+                userTypePresenter);
     }
 
 }

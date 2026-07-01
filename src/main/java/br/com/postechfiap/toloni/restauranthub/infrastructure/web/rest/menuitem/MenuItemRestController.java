@@ -1,12 +1,12 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.web.rest.menuitem;
 
 import br.com.postechfiap.toloni.restauranthub.adapters.controllers.MenuItemController;
+import br.com.postechfiap.toloni.restauranthub.application.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem.DeleteMenuItemUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem.FindAllMenuItemsUseCase;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem.FindMenuItemByIdUseCase;
 import br.com.postechfiap.toloni.restauranthub.domain.menuitem.valueobject.MenuItemId;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.RestaurantId;
-import br.com.postechfiap.toloni.restauranthub.domain.shared.pagination.*;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,10 +88,10 @@ public class MenuItemRestController implements MenuItemApi {
                 )
         );
 
-        var content = output.getContent().stream()
+        var content = output.content().stream()
                 .map(MenuItemResponse::from)
                 .toList();
 
-        return Page.of(content, output.getPageNumber(), output.getPageSize(), output.getTotalElements());
+        return Page.of(content, output.pageNumber(), output.pageSize(), output.totalElements());
     }
 }

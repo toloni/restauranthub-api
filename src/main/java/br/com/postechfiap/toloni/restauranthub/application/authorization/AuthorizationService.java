@@ -1,12 +1,12 @@
 package br.com.postechfiap.toloni.restauranthub.application.authorization;
 
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.UnauthorizedException;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 
 /// Service responsible for validating authorization rules across the domain.
 ///
@@ -68,11 +68,12 @@ public class AuthorizationService {
             throw new UnauthorizedException("User is not a Restaurant Owner.");
     }
 
-    /// Validates whether the requester has the [UserRole#RESTAURANT_OWNER] role.
+    /// Validates that the requester is an admin and the new owner has the [UserRole#RESTAURANT_OWNER] role.
     ///
-    /// @param requesterId the [UserId] of the requester
-    /// @throws NotFoundException     if no [User] or [UserType] is found for the requester
-    /// @throws UnauthorizedException if the requester does not have the required role
+    /// @param requesterId the [UserId] of the requester performing the transfer
+    /// @param newOwnerId  the [UserId] of the intended new owner
+    /// @throws NotFoundException     if no [User] or [UserType] is found for either user
+    /// @throws UnauthorizedException if the requester is not an admin, or the new owner is not a restaurant owner
     public void validateRestaurantTransferOwnership(UserId requesterId, UserId newOwnerId) {
 
         if (!this.isAdmin(requesterId))

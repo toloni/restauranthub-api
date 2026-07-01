@@ -1,8 +1,8 @@
 package br.com.postechfiap.toloni.restauranthub.application.usecases.user;
 
-import br.com.postechfiap.toloni.restauranthub.domain.restaurant.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
+import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.EntityInUseException;
-import br.com.postechfiap.toloni.restauranthub.domain.user.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 
 /// Use case responsible for deleting a [User] by its identifier.
