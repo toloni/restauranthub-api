@@ -6,21 +6,12 @@ import br.com.postechfiap.toloni.restauranthub.application.authorization.Authori
 import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
 import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.menuitem.*;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.MenuItemGatewayImpl;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.MenuItemJpaRepository;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /// Spring configuration for [MenuItem] beans.
 @Configuration
 public class MenuItemConfig {
-
-    @Bean
-    public MenuItemGateway menuItemGateway(MenuItemJpaRepository jpaRepository,
-                                           RestaurantJpaRepository restaurantJpaRepository) {
-        return new MenuItemGatewayImpl(jpaRepository, restaurantJpaRepository);
-    }
 
     @Bean
     public CreateMenuItemUseCase createMenuItemUseCase(MenuItemGateway menuItemGateway,

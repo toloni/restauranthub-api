@@ -84,7 +84,7 @@ class FindAllUserTypesUseCaseTest {
 
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
-        var first = output.content().get(0);
+        var first = output.content().getFirst();
         assertThat(first.id()).isEqualTo(restaurantOwnerType.getId());
         assertThat(first.name()).isEqualTo(restaurantOwnerType.getName());
         assertThat(first.description()).isEqualTo(restaurantOwnerType.getDescription());
@@ -164,7 +164,7 @@ class FindAllUserTypesUseCaseTest {
         var output = useCase.execute(new FindAllUserTypesUseCase.Input(pageRequest));
 
         assertThat(output.content()).hasSize(1);
-        assertThat(output.content().get(0).name().getValue()).isEqualTo("Restaurant Owner");
+        assertThat(output.content().getFirst().name().getValue()).isEqualTo("Restaurant Owner");
     }
 
     @Test

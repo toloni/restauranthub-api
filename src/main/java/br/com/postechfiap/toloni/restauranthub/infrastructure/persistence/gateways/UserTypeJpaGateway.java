@@ -12,6 +12,7 @@ import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.reposi
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.JpaSpecificationBuilder;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -19,12 +20,13 @@ import java.util.Optional;
 ///
 /// Bridges the domain layer and the persistence layer, converting between
 /// [UserType] domain entities and [UserTypeJpaEntity] persistence models.
-public class UserTypeGatewayImpl implements UserTypeGateway {
+@Component
+public class UserTypeJpaGateway implements UserTypeGateway {
 
     private final UserTypeJpaRepository jpaRepository;
 
     /// @param jpaRepository the Spring Data JPA repository for [UserTypeJpaEntity]
-    public UserTypeGatewayImpl(UserTypeJpaRepository jpaRepository) {
+    public UserTypeJpaGateway(UserTypeJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 

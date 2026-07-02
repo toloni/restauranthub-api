@@ -13,7 +13,7 @@ public class UserPresenter {
 
     /// Converts a [CreateUserUseCase.Output] to a [UserViewModel].
     ///
-    /// @param output the output from the create use case
+    /// @param output the output from the created use case
     /// @return the corresponding [UserViewModel]
     public UserViewModel present(CreateUserUseCase.Output output) {
         return new UserViewModel(

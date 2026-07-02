@@ -2,7 +2,8 @@
 
 ## Overview
 
-RestaurantHub is a shared restaurant management system that allows restaurant owners to manage their establishments while customers can browse restaurants and their menus.
+RestaurantHub is a shared restaurant management system that allows restaurant owners to manage their establishments
+while customers can browse restaurants and their menus.
 
 ### Features
 
@@ -23,16 +24,16 @@ RestaurantHub is a shared restaurant management system that allows restaurant ow
 
 ## Technologies
 
-| Technology | Version |
-|---|---|
-| Java | 25 |
-| Spring Boot | 4.1.0 |
-| MySQL | 8.0 |
-| Docker | latest |
-| Docker Compose | latest |
-| JUnit 5 | 5.11 |
-| Mockito | 5.x |
-| Swagger / OpenAPI | 3.0 |
+| Technology        | Version |
+|:------------------|:--------|
+| Java              | 25      |
+| Spring Boot       | 4.1.0   |
+| MySQL             | 8.0     |
+| Docker            | latest  |
+| Docker Compose    | latest  |
+| JUnit 5           | 5.11    |
+| Mockito           | 5.x     |
+| Swagger / OpenAPI | 3.0     |
 
 ## Package Structure
 
@@ -167,10 +168,10 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
     │   │   ├── RestaurantJpaRepository
     │   │   └── MenuItemJpaRepository
     │   ├── gateways                       # Gateway implementations (adapters)
-    │   │   ├── UserTypeGatewayImpl
-    │   │   ├── UserGatewayImpl
-    │   │   ├── RestaurantGatewayImpl
-    │   │   └── MenuItemGatewayImpl
+    │   │   ├── UserTypeJpaGateway
+    │   │   ├── UserJpaGateway
+    │   │   ├── RestaurantJpaGateway
+    │   │   └── MenuItemJpaGateway
     │   └── shared
     │       ├── JpaSpecificationBuilder    # Dynamic filters via JPA Specification
     │       └── PageRequestMapper          # Domain PageRequest → Spring Pageable
@@ -212,20 +213,20 @@ Defines the classification of a user within the system.
 
 **Fields**
 
-| Field | Type | Description |
-|---|---|---|
-| `id` | `UUID` | Unique identifier |
-| `name` | `String` | Name of the user type |
-| `description` | `String` | Brief description of the user type |
-| `role` | `UserRole` | Role associated with the user type |
+| Field         | Type       | Description                        |
+|---------------|------------|------------------------------------|
+| `id`          | `UUID`     | Unique identifier                  |
+| `name`        | `String`   | Name of the user type              |
+| `description` | `String`   | Brief description of the user type |
+| `role`        | `UserRole` | Role associated with the user type |
 
 **Roles**
 
-| Role | Description |
-|---|---|
-| `RESTAURANT_OWNER` | Can create and manage restaurants and their menu items |
-| `CUSTOMER` | Can browse restaurants and their menus |
-| `ADMIN` | Has full access to all resources regardless of ownership |
+| Role               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| `RESTAURANT_OWNER` | Can create and manage restaurants and their menu items   |
+| `CUSTOMER`         | Can browse restaurants and their menus                   |
+| `ADMIN`            | Has full access to all resources regardless of ownership |
 
 **Business Rules**
 
@@ -242,13 +243,13 @@ Represents a user in the system, associated with a `UserType`.
 
 **Fields**
 
-| Field | Type | Description |
-|---|---|---|
-| `id` | `UUID` | Unique identifier |
-| `name` | `String` | Full name of the user |
-| `email` | `String` | Email address, used for identification |
-| `password` | `String` | Password, minimum 8 characters |
-| `userTypeId` | `UUID` | Reference to the associated `UserType` |
+| Field        | Type     | Description                            |
+|--------------|----------|----------------------------------------|
+| `id`         | `UUID`   | Unique identifier                      |
+| `name`       | `String` | Full name of the user                  |
+| `email`      | `String` | Email address, used for identification |
+| `password`   | `String` | Password, minimum 8 characters         |
+| `userTypeId` | `UUID`   | Reference to the associated `UserType` |
 
 **Business Rules**
 
@@ -267,14 +268,14 @@ Represents a restaurant managed by a `Restaurant Owner` user.
 
 **Fields**
 
-| Field | Type | Description |
-|---|---|---|
-| `id` | `UUID` | Unique identifier |
-| `name` | `String` | Name of the restaurant |
-| `address` | `String` | Physical address of the restaurant |
-| `cuisineType` | `String` | Type of cuisine served |
-| `openingHours` | `String` | Operating hours of the restaurant |
-| `ownerId` | `UUID` | Reference to the owner `User` |
+| Field          | Type     | Description                        |
+|----------------|----------|------------------------------------|
+| `id`           | `UUID`   | Unique identifier                  |
+| `name`         | `String` | Name of the restaurant             |
+| `address`      | `String` | Physical address of the restaurant |
+| `cuisineType`  | `String` | Type of cuisine served             |
+| `openingHours` | `String` | Operating hours of the restaurant  |
+| `ownerId`      | `UUID`   | Reference to the owner `User`      |
 
 **Business Rules**
 
@@ -288,11 +289,14 @@ Represents a restaurant managed by a `Restaurant Owner` user.
 
 **Owner Validation**
 
-The `ownerId` is always provided via the `X-User-Id` request header — never in the request body. This ensures the ownership is tied to the authenticated user making the request.
+The `ownerId` is always provided via the `X-User-Id` request header — never in the request body. This ensures the
+ownership is tied to the authenticated user making the request.
 
 **Ownership Transfer**
 
-Restaurant ownership can be transferred by an `ADMIN` via a dedicated endpoint. The new owner must be an existing user with the `RESTAURANT_OWNER` role. The transfer is performed by providing the new owner identifier in the request body and the admin identifier via the `X-User-Id` header.
+Restaurant ownership can be transferred by an `ADMIN` via a dedicated endpoint. The new owner must be an existing user
+with the `RESTAURANT_OWNER` role. The transfer is performed by providing the new owner identifier in the request body
+and the admin identifier via the `X-User-Id` header.
 
 ---
 
@@ -302,16 +306,16 @@ Represents an item available in a restaurant's menu.
 
 **Fields**
 
-| Field | Type | Description |
-|---|---|---|
-| `id` | `UUID` | Unique identifier |
-| `name` | `String` | Name of the menu item |
-| `description` | `String` | Description of the menu item |
-| `price` | `BigDecimal` | Price of the menu item |
-| `currency` | `String` | Currency code (e.g. `BRL`, `USD`) |
-| `dineInOnly` | `Boolean` | Whether the item is available for dine-in only |
-| `imagePath` | `String` | Path to the item image (optional) |
-| `restaurantId` | `UUID` | Reference to the owning `Restaurant` |
+| Field          | Type         | Description                                    |
+|----------------|--------------|------------------------------------------------|
+| `id`           | `UUID`       | Unique identifier                              |
+| `name`         | `String`     | Name of the menu item                          |
+| `description`  | `String`     | Description of the menu item                   |
+| `price`        | `BigDecimal` | Price of the menu item                         |
+| `currency`     | `String`     | Currency code (e.g. `BRL`, `USD`)              |
+| `dineInOnly`   | `Boolean`    | Whether the item is available for dine-in only |
+| `imagePath`    | `String`     | Path to the item image (optional)              |
+| `restaurantId` | `UUID`       | Reference to the owning `Restaurant`           |
 
 **Business Rules**
 
@@ -326,7 +330,8 @@ Represents an item available in a restaurant's menu.
 
 **Owner Validation**
 
-The `ownerId` is always provided via the `X-User-Id` request header — never in the request body. This ensures the ownership is tied to the authenticated user making the request.
+The `ownerId` is always provided via the `X-User-Id` request header — never in the request body. This ensures the
+ownership is tied to the authenticated user making the request.
 
 ## API Endpoints
 
@@ -338,50 +343,50 @@ Base URL: `http://localhost:8080/api/v1`
 
 ### UserType
 
-| Method   | Route | Description | Headers | Response Codes |
-|----------|---|---|---|---|
-| `POST`   | `/user-types` | Create a new user type | — | `201`, `409`, `422` |
-| `PATCH`  | `/user-types/{id}` | Update an existing user type | — | `200`, `404`, `409`, `422` |
-| `DELETE` | `/user-types/{id}` | Delete a user type | — | `204`, `409` |
-| `GET`    | `/user-types/{id}` | Find a user type by id | — | `200`, `404` |
-| `GET`    | `/user-types` | List all user types (paginated) | — | `200` |
+| Method   | Route              | Description                     | Headers | Response Codes             |
+|----------|--------------------|---------------------------------|---------|----------------------------|
+| `POST`   | `/user-types`      | Create a new user type          | —       | `201`, `409`, `422`        |
+| `PATCH`  | `/user-types/{id}` | Update an existing user type    | —       | `200`, `404`, `409`, `422` |
+| `DELETE` | `/user-types/{id}` | Delete a user type              | —       | `204`, `409`               |
+| `GET`    | `/user-types/{id}` | Find a user type by id          | —       | `200`, `404`               |
+| `GET`    | `/user-types`      | List all user types (paginated) | —       | `200`                      |
 
 ---
 
 ### User
 
-| Method | Route | Description | Headers | Response Codes |
-|---|---|---|---|---|
-| `POST` | `/users` | Create a new user | — | `201`, `404`, `409`, `422` |
-| `PATCH` | `/users/{id}` | Update an existing user | — | `200`, `404`, `409`, `422` |
-| `DELETE` | `/users/{id}` | Delete a user | — | `204`, `409` |
-| `GET` | `/users/{id}` | Find a user by id | — | `200`, `404` |
-| `GET` | `/users` | List all users (paginated) | — | `200` |
+| Method   | Route         | Description                | Headers | Response Codes             |
+|----------|---------------|----------------------------|---------|----------------------------|
+| `POST`   | `/users`      | Create a new user          | —       | `201`, `404`, `409`, `422` |
+| `PATCH`  | `/users/{id}` | Update an existing user    | —       | `200`, `404`, `409`, `422` |
+| `DELETE` | `/users/{id}` | Delete a user              | —       | `204`, `409`               |
+| `GET`    | `/users/{id}` | Find a user by id          | —       | `200`, `404`               |
+| `GET`    | `/users`      | List all users (paginated) | —       | `200`                      |
 
 ---
 
 ### Restaurant
 
-| Method | Route                     | Description                 | Headers | Response Codes |
-|---|---------------------------|-----------------------------|---|---|
-| `POST` | `/restaurants`            | Create a new restaurant     | `X-User-Id` | `201`, `403`, `404`, `409`, `422` |
-| `PATCH` | `/restaurants/{id}`       | Update an existing restaurant | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
-| `PATCH` | `/restaurants/{id}/transfer-ownership` | Update restaurant ownership | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
-| `DELETE` | `/restaurants/{id}`       | Delete a restaurant and all its menu items | `X-User-Id` | `204`, `403`, `404` |
-| `GET` | `/restaurants/{id}`       | Find a restaurant by id     | — | `200`, `404` |
-| `GET` | `/restaurants`            | List all restaurants (paginated) | — | `200` |
+| Method   | Route                                  | Description                                | Headers     | Response Codes                    |
+|----------|----------------------------------------|--------------------------------------------|-------------|-----------------------------------|
+| `POST`   | `/restaurants`                         | Create a new restaurant                    | `X-User-Id` | `201`, `403`, `404`, `409`, `422` |
+| `PATCH`  | `/restaurants/{id}`                    | Update an existing restaurant              | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
+| `PATCH`  | `/restaurants/{id}/transfer-ownership` | Update restaurant ownership                | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
+| `DELETE` | `/restaurants/{id}`                    | Delete a restaurant and all its menu items | `X-User-Id` | `204`, `403`, `404`               |
+| `GET`    | `/restaurants/{id}`                    | Find a restaurant by id                    | —           | `200`, `404`                      |
+| `GET`    | `/restaurants`                         | List all restaurants (paginated)           | —           | `200`                             |
 
 ---
 
 ### MenuItem
 
-| Method | Route | Description | Headers | Response Codes |
-|---|---|---|---|---|
-| `POST` | `/menu-items` | Create a new menu item | `X-User-Id` | `201`, `403`, `404`, `409`, `422` |
-| `PUT` | `/menu-items/{id}` | Update an existing menu item | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
-| `DELETE` | `/menu-items/{id}` | Delete a menu item | `X-User-Id` | `204`, `403`, `404` |
-| `GET` | `/menu-items/{id}` | Find a menu item by id | — | `200`, `404` |
-| `GET` | `/menu-items` | List all menu items (paginated) | — | `200` |
+| Method   | Route              | Description                     | Headers     | Response Codes                    |
+|----------|--------------------|---------------------------------|-------------|-----------------------------------|
+| `POST`   | `/menu-items`      | Create a new menu item          | `X-User-Id` | `201`, `403`, `404`, `409`, `422` |
+| `PUT`    | `/menu-items/{id}` | Update an existing menu item    | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
+| `DELETE` | `/menu-items/{id}` | Delete a menu item              | `X-User-Id` | `204`, `403`, `404`               |
+| `GET`    | `/menu-items/{id}` | Find a menu item by id          | —           | `200`, `404`                      |
+| `GET`    | `/menu-items`      | List all menu items (paginated) | —           | `200`                             |
 
 ---
 
@@ -389,31 +394,31 @@ Base URL: `http://localhost:8080/api/v1`
 
 All `GET` list endpoints support the following query parameters:
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `page` | `integer` | `0` | Page number (zero-based) |
-| `size` | `integer` | `10` | Number of elements per page |
-| `sort` | `string` | — | Field name to sort by (e.g. `name`) |
-| `direction` | `string` | `ASC` | Sort direction (`ASC` or `DESC`) |
-| `filter` | `string` | — | Field name to filter by |
-| `filterValue` | `string` | — | Value to filter with |
+| Parameter     | Type      | Default | Description                         |
+|---------------|-----------|---------|-------------------------------------|
+| `page`        | `integer` | `0`     | Page number (zero-based)            |
+| `size`        | `integer` | `10`    | Number of elements per page         |
+| `sort`        | `string`  | —       | Field name to sort by (e.g. `name`) |
+| `direction`   | `string`  | `ASC`   | Sort direction (`ASC` or `DESC`)    |
+| `filter`      | `string`  | —       | Field name to filter by             |
+| `filterValue` | `string`  | —       | Value to filter with                |
 
 ---
 
 ### Response Codes
 
-| Code | Description |
-|---|---|
-| `200` | OK — request succeeded |
-| `201` | Created — resource created successfully |
-| `204` | No Content — resource deleted successfully |
+| Code  | Description                                           |
+|-------|-------------------------------------------------------|
+| `200` | OK — request succeeded                                |
+| `201` | Created — resource created successfully               |
+| `204` | No Content — resource deleted successfully            |
 | `400` | Bad Request — malformed request or invalid field type |
-| `403` | Forbidden — requester does not have permission |
-| `404` | Not Found — resource not found |
-| `405` | Method Not Allowed — HTTP method not supported |
-| `409` | Conflict — resource already exists or is in use |
-| `422` | Unprocessable Entity — domain rule violated |
-| `500` | Internal Server Error — unexpected error |
+| `403` | Forbidden — requester does not have permission        |
+| `404` | Not Found — resource not found                        |
+| `405` | Method Not Allowed — HTTP method not supported        |
+| `409` | Conflict — resource already exists or is in use       |
+| `422` | Unprocessable Entity — domain rule violated           |
+| `500` | Internal Server Error — unexpected error              |
 
 ---
 
@@ -430,14 +435,14 @@ All `GET` list endpoints support the following query parameters:
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|---|---|---|
-| `DB_HOST` | Database host | `localhost` |
-| `DB_PORT` | Database port | `3306` |
-| `DB_NAME` | Database name | `restauranthub_db` |
-| `DB_USERNAME` | Database username | `root` |
-| `DB_PASSWORD` | Database password | `root` |
-| `SERVER_PORT` | Application port | `8080` |
+| Variable      | Description       | Default            |
+|---------------|-------------------|--------------------|
+| `DB_HOST`     | Database host     | `localhost`        |
+| `DB_PORT`     | Database port     | `3306`             |
+| `DB_NAME`     | Database name     | `restauranthub_db` |
+| `DB_USERNAME` | Database username | `root`             |
+| `DB_PASSWORD` | Database password | `root`             |
+| `SERVER_PORT` | Application port  | `8080`             |
 
 ---
 
@@ -445,7 +450,7 @@ All `GET` list endpoints support the following query parameters:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/restauranthub.git
+git clone https://github.com/toloni/restauranthub-api.git
 cd restauranthub
 
 # Build and start all services
@@ -502,11 +507,13 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 The `docker-compose.yml` configures two services:
 
 **`db`** — MySQL 8.0 database
+
 - Exposes port `3306`
 - Creates the `restauranthub_db` database on startup
 - Data is persisted via a named volume
 
 **`app`** — RestaurantHub Spring Boot application
+
 - Exposes port `8080`
 - Depends on the `db` service
 - Connects to the database using environment variables
@@ -536,7 +543,7 @@ services:
       - mysql_data:/var/lib/mysql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-proot" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -575,6 +582,7 @@ Collections for Postman and Insomnia are available in the `/collections` directo
 ### Importing
 
 **Postman**
+
 1. Open Postman
 2. Click **Import**
 3. Select the file `collections/restauranthub.postman_collection.json`
@@ -596,11 +604,13 @@ Collections for Postman and Insomnia are available in the `/collections` directo
 ### Strategy
 
 **Unit Tests** — test each class in isolation using mocks for dependencies:
+
 - Domain entities (`UserType`, `User`, `Restaurant`, `MenuItem`)
 - Use cases (all CRUD operations for each domain)
 - `AuthorizationService`
 
 **Integration Tests** — test the full application stack:
+
 - REST endpoints via `MockMvc`
 - Database persistence via `@DataJpaTest`
 - Full application context via `@SpringBootTest`
@@ -625,12 +635,12 @@ Coverage report will be available at `target/site/jacoco/index.html`.
 
 ### Coverage
 
-| Layer | Coverage |
-|---|---|
-| Domain Entities | > 90% |
-| Use Cases | > 90% |
-| Authorization Service | > 90% |
-| Overall | > 80% |
+| Layer                 | Coverage |
+|-----------------------|----------|
+| Domain Entities       | > 90%    |
+| Use Cases             | > 90%    |
+| Authorization Service | > 90%    |
+| Overall               | > 80%    |
 
 ---
 

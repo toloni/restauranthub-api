@@ -1,6 +1,7 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories;
 
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.RestaurantJpaEntity;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,6 +26,7 @@ public interface RestaurantJpaRepository extends JpaRepository<RestaurantJpaEnti
     /// @return a [Page] of [RestaurantJpaEntity] with owner loaded
     @EntityGraph(value = "Restaurant.withOwner")
     @Override
+    @NullMarked
     Page<RestaurantJpaEntity> findAll(Pageable pageable);
 
     /// Returns a filtered and paginated list of restaurants matching the given specification,
@@ -35,6 +37,7 @@ public interface RestaurantJpaRepository extends JpaRepository<RestaurantJpaEnti
     /// @return a [Page] of [RestaurantJpaEntity] with owner loaded
     @EntityGraph(value = "Restaurant.withOwner")
     @Override
+    @NullMarked
     Page<RestaurantJpaEntity> findAll(Specification<RestaurantJpaEntity> spec, Pageable pageable);
 
     /// Returns a restaurant by its id, eagerly fetching the associated [UserJpaEntity] owner
@@ -44,6 +47,7 @@ public interface RestaurantJpaRepository extends JpaRepository<RestaurantJpaEnti
     /// @return an [Optional] containing the [RestaurantJpaEntity] with owner loaded, or empty if not found
     @EntityGraph(value = "Restaurant.withOwner")
     @Override
+    @NullMarked
     Optional<RestaurantJpaEntity> findById(UUID id);
 
     /// Checks whether a restaurant with the given name exists.

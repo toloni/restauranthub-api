@@ -1,6 +1,7 @@
 package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories;
 
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserJpaEntity;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,6 +26,7 @@ public interface UserJpaRepository extends JpaRepository<UserJpaEntity, UUID>,
     /// @return a [Page] of [UserJpaEntity] with userType loaded
     @EntityGraph(value = "User.withUserType")
     @Override
+    @NullMarked
     Page<UserJpaEntity> findAll(Pageable pageable);
 
     /// Returns a filtered and paginated list of users matching the given specification,
@@ -35,6 +37,7 @@ public interface UserJpaRepository extends JpaRepository<UserJpaEntity, UUID>,
     /// @return a [Page] of [UserJpaEntity] with userType loaded
     @EntityGraph(value = "User.withUserType")
     @Override
+    @NullMarked
     Page<UserJpaEntity> findAll(Specification<UserJpaEntity> spec, Pageable pageable);
 
     /// Returns a user by its id, eagerly fetching the associated [UserTypeJpaEntity]
@@ -44,6 +47,7 @@ public interface UserJpaRepository extends JpaRepository<UserJpaEntity, UUID>,
     /// @return an [Optional] containing the [UserJpaEntity] with userType loaded, or empty if not found
     @EntityGraph(value = "User.withUserType")
     @Override
+    @NullMarked
     Optional<UserJpaEntity> findById(UUID id);
 
     /// Checks whether a user with the given email exists.

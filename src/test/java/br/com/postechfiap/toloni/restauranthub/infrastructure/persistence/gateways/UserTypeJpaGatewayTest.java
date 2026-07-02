@@ -29,13 +29,13 @@ import static org.mockito.Mockito.*;
 
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
-class UserTypeGatewayImplTest {
+class UserTypeJpaGatewayTest {
 
     @Mock
     private UserTypeJpaRepository jpaRepository;
 
     @InjectMocks
-    private UserTypeGatewayImpl gateway;
+    private UserTypeJpaGateway gateway;
 
     private UserTypeId id;
     private UserType userType;
@@ -163,7 +163,7 @@ class UserTypeGatewayImplTest {
         var result = gateway.findAll(pageRequest);
 
         assertThat(result.content()).hasSize(1);
-        assertThat(result.content().get(0).getName().getValue()).isEqualTo("Restaurant Owner");
+        assertThat(result.content().getFirst().getName().getValue()).isEqualTo("Restaurant Owner");
     }
 
     @Test

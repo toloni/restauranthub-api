@@ -11,15 +11,10 @@ import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserName;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserPassword;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserType;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeDescription;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeName;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.MenuItemJpaEntity;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.RestaurantJpaEntity;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserJpaEntity;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.UserTypeJpaEntity;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.MenuItemJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +37,7 @@ import static org.mockito.Mockito.*;
 
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
-class MenuItemGatewayImplTest {
+class MenuItemJpaGatewayTest {
 
     @Mock
     private MenuItemJpaRepository jpaRepository;
@@ -51,7 +46,7 @@ class MenuItemGatewayImplTest {
     private RestaurantJpaRepository restaurantJpaRepository;
 
     @InjectMocks
-    private MenuItemGatewayImpl gateway;
+    private MenuItemJpaGateway gateway;
 
     private MenuItemId id;
     private RestaurantId restaurantId;
@@ -63,15 +58,8 @@ class MenuItemGatewayImplTest {
     void setUp() {
         id = MenuItemId.generate();
         restaurantId = RestaurantId.generate();
-
         var ownerId = UserId.generate();
         var userTypeId = UserTypeId.generate();
-        var userTypeEntity = UserTypeJpaEntity.fromDomain(new UserType(
-                userTypeId,
-                UserTypeName.of("Restaurant Owner"),
-                UserTypeDescription.of("Owns and manages a restaurant"),
-                UserRole.RESTAURANT_OWNER
-        ));
         var owner = new User(
                 ownerId,
                 UserName.of("John Doe"),
@@ -245,7 +233,7 @@ class MenuItemGatewayImplTest {
         var result = gateway.findAllByRestaurantId(restaurantId, pageRequest);
 
         assertThat(result.content()).hasSize(1);
-        assertThat(result.content().get(0).getRestaurantId()).isEqualTo(restaurantId);
+        assertThat(result.content().getFirst().getRestaurantId()).isEqualTo(restaurantId);
     }
 
     @Test
@@ -424,7 +412,7 @@ class MenuItemGatewayImplTest {
         var result = gateway.findAllWithRestaurantName(restaurantId, pageRequest);
 
         assertThat(result.content()).hasSize(1);
-        assertThat(result.content().get(0).restaurantName()).isEqualTo("The Great Burger");
+        assertThat(result.content().getFirst().restaurantName()).isEqualTo("The Great Burger");
         verify(jpaRepository, times(1)).findAllByRestaurantId(eq(restaurantId.getValue()), any(org.springframework.data.domain.Pageable.class));
     }
 

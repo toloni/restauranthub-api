@@ -219,7 +219,7 @@ class RestaurantRestControllerTest {
         var response = restController.findAll(0, 10, null, null, null, null);
 
         assertThat(response.content()).hasSize(1);
-        assertThat(response.content().get(0).name()).isEqualTo("The Great Burger");
+        assertThat(response.content().getFirst().name()).isEqualTo("The Great Burger");
     }
 
     @Test
@@ -248,7 +248,7 @@ class RestaurantRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllRestaurantsUseCase.Input.class);
         verify(restaurantController, times(1)).findAll(captor.capture());
         var sorts = captor.getValue().pageRequest().sorts();
-        assertThat(sorts.get(0).direction()).isEqualTo(SortDirection.ASC);
+        assertThat(sorts.getFirst().direction()).isEqualTo(SortDirection.ASC);
     }
 
     @Test
@@ -263,7 +263,7 @@ class RestaurantRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllRestaurantsUseCase.Input.class);
         verify(restaurantController, times(1)).findAll(captor.capture());
         var sorts = captor.getValue().pageRequest().sorts();
-        assertThat(sorts.get(0).direction()).isEqualTo(SortDirection.DESC);
+        assertThat(sorts.getFirst().direction()).isEqualTo(SortDirection.DESC);
     }
 
     @Test
@@ -278,8 +278,8 @@ class RestaurantRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllRestaurantsUseCase.Input.class);
         verify(restaurantController, times(1)).findAll(captor.capture());
         var filters = captor.getValue().pageRequest().filters();
-        assertThat(filters.get(0).field()).isEqualTo("cuisineType");
-        assertThat(filters.get(0).value()).isEqualTo("Italian");
+        assertThat(filters.getFirst().field()).isEqualTo("cuisineType");
+        assertThat(filters.getFirst().value()).isEqualTo("Italian");
     }
 
     @Test

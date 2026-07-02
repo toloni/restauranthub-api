@@ -2,6 +2,7 @@ package br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repos
 
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.entities.MenuItemJpaEntity;
 import jakarta.transaction.Transactional;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,6 +27,7 @@ public interface MenuItemJpaRepository extends JpaRepository<MenuItemJpaEntity, 
     /// @return a [Page] of [MenuItemJpaEntity] with restaurant loaded
     @EntityGraph(value = "MenuItem.withRestaurant")
     @Override
+    @NullMarked
     Page<MenuItemJpaEntity> findAll(Pageable pageable);
 
     /// Returns a filtered and paginated list of menu items matching the given specification,
@@ -36,6 +38,7 @@ public interface MenuItemJpaRepository extends JpaRepository<MenuItemJpaEntity, 
     /// @return a [Page] of [MenuItemJpaEntity] with restaurant loaded
     @EntityGraph(value = "MenuItem.withRestaurant")
     @Override
+    @NullMarked
     Page<MenuItemJpaEntity> findAll(Specification<MenuItemJpaEntity> spec, Pageable pageable);
 
     /// Returns a menu item by its id, eagerly fetching the associated [RestaurantJpaEntity]
@@ -45,6 +48,7 @@ public interface MenuItemJpaRepository extends JpaRepository<MenuItemJpaEntity, 
     /// @return an [Optional] containing the [MenuItemJpaEntity] with restaurant loaded, or empty if not found
     @EntityGraph(value = "MenuItem.withRestaurant")
     @Override
+    @NullMarked
     Optional<MenuItemJpaEntity> findById(UUID id);
 
     /// Checks whether a menu item with the given name exists in the given restaurant.
@@ -69,11 +73,6 @@ public interface MenuItemJpaRepository extends JpaRepository<MenuItemJpaEntity, 
     /// @return `true` if the restaurant has at least one menu item
     boolean existsByRestaurantId(UUID restaurantId);
 
-    /// Returns a paginated list of menu items belonging to the given restaurant.
-    ///
-    /// @param restaurantId the restaurant UUID to filter by
-    /// @param pageable     the pagination parameters
-    /// @return a [Page] of [MenuItemJpaEntity]
     /// Returns a paginated list of menu items belonging to the given restaurant,
     /// eagerly fetching the associated [RestaurantJpaEntity].
     ///

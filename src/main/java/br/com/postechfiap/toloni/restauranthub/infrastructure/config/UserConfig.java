@@ -6,19 +6,12 @@ import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGa
 import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
 import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.user.*;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.UserGatewayImpl;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /// Spring configuration for [User] beans.
 @Configuration
 public class UserConfig {
-
-    @Bean
-    public UserGateway userGateway(UserJpaRepository userJpaRepository) {
-        return new UserGatewayImpl(userJpaRepository);
-    }
 
     @Bean
     public CreateUserUseCase createUserUseCase(UserGateway userGateway, UserTypeGateway userTypeGateway) {

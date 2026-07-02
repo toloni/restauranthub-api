@@ -15,6 +15,7 @@ import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.reposi
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.JpaSpecificationBuilder;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -22,14 +23,15 @@ import java.util.Optional;
 ///
 /// Bridges the domain layer and the persistence layer, converting between
 /// [Restaurant] domain entities and [RestaurantJpaEntity] persistence models.
-public class RestaurantGatewayImpl implements RestaurantGateway {
+@Component
+public class RestaurantJpaGateway implements RestaurantGateway {
 
     private final RestaurantJpaRepository restaurantJpaRepository;
     private final UserJpaRepository userJpaRepository;
 
     /// @param restaurantJpaRepository the Spring Data JPA repository for [RestaurantJpaEntity]
-    public RestaurantGatewayImpl(RestaurantJpaRepository restaurantJpaRepository,
-                                 UserJpaRepository userJpaRepository) {
+    public RestaurantJpaGateway(RestaurantJpaRepository restaurantJpaRepository,
+                                UserJpaRepository userJpaRepository) {
         this.restaurantJpaRepository = restaurantJpaRepository;
         this.userJpaRepository = userJpaRepository;
     }

@@ -13,7 +13,7 @@ public class MenuItemPresenter {
 
     /// Converts a [CreateMenuItemUseCase.Output] to a [MenuItemViewModel].
     ///
-    /// @param output the output from the create use case
+    /// @param output the output from the created use case
     /// @return the corresponding [MenuItemViewModel]
     public MenuItemViewModel present(CreateMenuItemUseCase.Output output) {
         return new MenuItemViewModel(

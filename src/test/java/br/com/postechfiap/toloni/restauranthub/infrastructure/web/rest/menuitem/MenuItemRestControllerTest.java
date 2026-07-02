@@ -179,7 +179,7 @@ class MenuItemRestControllerTest {
         var response = restController.findAll(null, 0, 10, null, null, null, null);
 
         assertThat(response.content()).hasSize(1);
-        assertThat(response.content().get(0).name()).isEqualTo("Classic Burger");
+        assertThat(response.content().getFirst().name()).isEqualTo("Classic Burger");
     }
 
     @Test
@@ -236,7 +236,7 @@ class MenuItemRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
         var sorts = captor.getValue().pageRequest().sorts();
-        assertThat(sorts.get(0).direction()).isEqualTo(SortDirection.ASC);
+        assertThat(sorts.getFirst().direction()).isEqualTo(SortDirection.ASC);
     }
 
     @Test
@@ -251,7 +251,7 @@ class MenuItemRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
         var sorts = captor.getValue().pageRequest().sorts();
-        assertThat(sorts.get(0).direction()).isEqualTo(SortDirection.DESC);
+        assertThat(sorts.getFirst().direction()).isEqualTo(SortDirection.DESC);
     }
 
     @Test
@@ -266,8 +266,8 @@ class MenuItemRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
         var filters = captor.getValue().pageRequest().filters();
-        assertThat(filters.get(0).field()).isEqualTo("name");
-        assertThat(filters.get(0).value()).isEqualTo("Burger");
+        assertThat(filters.getFirst().field()).isEqualTo("name");
+        assertThat(filters.getFirst().value()).isEqualTo("Burger");
     }
 
     @Test

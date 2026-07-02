@@ -10,7 +10,7 @@ public class RestaurantPresenter {
 
     /// Converts a [CreateRestaurantUseCase.Output] to a [RestaurantViewModel].
     ///
-    /// @param output the output from the create use case
+    /// @param output the output from the created use case
     /// @return the corresponding [RestaurantViewModel]
     public RestaurantViewModel present(CreateRestaurantUseCase.Output output) {
         return new RestaurantViewModel(

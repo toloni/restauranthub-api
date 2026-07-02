@@ -6,11 +6,7 @@ import br.com.postechfiap.toloni.restauranthub.application.authorization.Authori
 import br.com.postechfiap.toloni.restauranthub.application.gateways.MenuItemGateway;
 import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
 import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant.*;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.gateways.RestaurantGatewayImpl;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
-import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.UserJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,17 +15,9 @@ import org.springframework.context.annotation.Configuration;
 public class RestaurantConfig {
 
     @Bean
-    public RestaurantGateway restaurantGateway(RestaurantJpaRepository jpaRepository,
-                                               UserJpaRepository userJpaRepository) {
-        return new RestaurantGatewayImpl(jpaRepository, userJpaRepository);
-    }
-
-    @Bean
     public CreateRestaurantUseCase createRestaurantUseCase(RestaurantGateway restaurantGateway,
-                                                           UserGateway userGateway,
-                                                           UserTypeGateway userTypeGateway,
                                                            AuthorizationService authorizationService) {
-        return new CreateRestaurantUseCase(restaurantGateway, userGateway, userTypeGateway, authorizationService);
+        return new CreateRestaurantUseCase(restaurantGateway, authorizationService);
     }
 
     @Bean

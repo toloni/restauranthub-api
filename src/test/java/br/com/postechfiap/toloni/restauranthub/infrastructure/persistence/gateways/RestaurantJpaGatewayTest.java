@@ -34,7 +34,7 @@ import static org.mockito.Mockito.*;
 
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
-class RestaurantGatewayImplTest {
+class RestaurantJpaGatewayTest {
 
     @Mock
     private RestaurantJpaRepository restaurantJpaRepository;
@@ -43,7 +43,7 @@ class RestaurantGatewayImplTest {
     private UserJpaRepository userJpaRepository;
 
     @InjectMocks
-    private RestaurantGatewayImpl gateway;
+    private RestaurantJpaGateway gateway;
 
     private RestaurantId id;
     private UserId ownerId;
@@ -364,8 +364,8 @@ class RestaurantGatewayImplTest {
 
         assertThat(result).isNotNull();
         assertThat(result.content()).hasSize(1);
-        assertThat(result.content().get(0).restaurant().getId()).isEqualTo(id);
-        assertThat(result.content().get(0).ownerName()).isEqualTo("John Doe");
+        assertThat(result.content().getFirst().restaurant().getId()).isEqualTo(id);
+        assertThat(result.content().getFirst().ownerName()).isEqualTo("John Doe");
         assertThat(result.totalElements()).isEqualTo(1L);
     }
 
@@ -389,7 +389,7 @@ class RestaurantGatewayImplTest {
         var result = gateway.findAllWithOwnerName(pageRequest);
 
         assertThat(result.content()).hasSize(1);
-        assertThat(result.content().get(0).restaurant().getName().getValue()).isEqualTo("The Great Burger");
+        assertThat(result.content().getFirst().restaurant().getName().getValue()).isEqualTo("The Great Burger");
     }
 
     @Test

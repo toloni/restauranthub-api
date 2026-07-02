@@ -175,7 +175,7 @@ class UserRestControllerTest {
         var response = restController.findAll(0, 10, null, null, null, null);
 
         assertThat(response.content()).hasSize(1);
-        assertThat(response.content().get(0).name()).isEqualTo("John Doe");
+        assertThat(response.content().getFirst().name()).isEqualTo("John Doe");
         assertThat(response.totalElements()).isEqualTo(1L);
     }
 
@@ -205,7 +205,7 @@ class UserRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllUsersUseCase.Input.class);
         verify(userController, times(1)).findAll(captor.capture());
         var sorts = captor.getValue().pageRequest().sorts();
-        assertThat(sorts.get(0).direction()).isEqualTo(SortDirection.ASC);
+        assertThat(sorts.getFirst().direction()).isEqualTo(SortDirection.ASC);
     }
 
     @Test
@@ -220,7 +220,7 @@ class UserRestControllerTest {
         var captor = ArgumentCaptor.forClass(FindAllUsersUseCase.Input.class);
         verify(userController, times(1)).findAll(captor.capture());
         var sorts = captor.getValue().pageRequest().sorts();
-        assertThat(sorts.get(0).direction()).isEqualTo(SortDirection.DESC);
+        assertThat(sorts.getFirst().direction()).isEqualTo(SortDirection.DESC);
     }
 
     @Test
@@ -250,8 +250,8 @@ class UserRestControllerTest {
         verify(userController, times(1)).findAll(captor.capture());
         var filters = captor.getValue().pageRequest().filters();
         assertThat(filters).hasSize(1);
-        assertThat(filters.get(0).field()).isEqualTo("email");
-        assertThat(filters.get(0).value()).isEqualTo("john@example.com");
+        assertThat(filters.getFirst().field()).isEqualTo("email");
+        assertThat(filters.getFirst().value()).isEqualTo("john@example.com");
     }
 
     @Test

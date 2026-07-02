@@ -95,7 +95,7 @@ class FindAllUsersUseCaseTest {
 
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
-        var first = output.content().get(0);
+        var first = output.content().getFirst();
         assertThat(first.id()).isEqualTo(johnUser.getId());
         assertThat(first.name()).isEqualTo(johnUser.getName());
         assertThat(first.email()).isEqualTo(johnUser.getEmail());
@@ -200,7 +200,7 @@ class FindAllUsersUseCaseTest {
         var output = useCase.execute(new FindAllUsersUseCase.Input(pageRequest));
 
         assertThat(output.content()).hasSize(1);
-        assertThat(output.content().get(0).name().getValue()).isEqualTo("John Doe");
+        assertThat(output.content().getFirst().name().getValue()).isEqualTo("John Doe");
     }
 
     @Test

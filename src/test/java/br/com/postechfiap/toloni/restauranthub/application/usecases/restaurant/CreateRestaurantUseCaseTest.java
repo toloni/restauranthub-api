@@ -2,24 +2,14 @@ package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
 import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
 import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.*;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.AlreadyExistsException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.DomainException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.NotFoundException;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.UnauthorizedException;
-import br.com.postechfiap.toloni.restauranthub.domain.user.User;
-import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserEmail;
 import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserId;
-import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserName;
-import br.com.postechfiap.toloni.restauranthub.domain.user.valueobject.UserPassword;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserType;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeDescription;
 import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeId;
-import br.com.postechfiap.toloni.restauranthub.domain.usertype.valueobject.UserTypeName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -42,12 +32,6 @@ class CreateRestaurantUseCaseTest {
     private RestaurantGateway restaurantGateway;
 
     @Mock
-    private UserGateway userGateway;
-
-    @Mock
-    private UserTypeGateway userTypeGateway;
-
-    @Mock
     private AuthorizationService authorizationService;
 
     @InjectMocks
@@ -55,27 +39,12 @@ class CreateRestaurantUseCaseTest {
 
     private UserId ownerId;
     private UserTypeId userTypeId;
-    private User owner;
-    private UserType restaurantOwnerType;
     private CreateRestaurantUseCase.Input input;
 
     @BeforeEach
     void setUp() {
         ownerId = UserId.generate();
         userTypeId = UserTypeId.generate();
-        owner = new User(
-                ownerId,
-                UserName.of("John Doe"),
-                UserEmail.of("john@example.com"),
-                UserPassword.of("password123"),
-                userTypeId
-        );
-        restaurantOwnerType = new UserType(
-                userTypeId,
-                UserTypeName.of("Restaurant Owner"),
-                UserTypeDescription.of("Owns and manages a restaurant"),
-                UserRole.RESTAURANT_OWNER
-        );
         input = new CreateRestaurantUseCase.Input(
                 "The Great Burger",
                 "123 Main St, Springfield",
@@ -264,6 +233,7 @@ class CreateRestaurantUseCaseTest {
     }
 
     @DisplayName("Should throw DomainException when address is blank")
+    @Test
     void shouldThrowDomainExceptionWhenAddressIsBlank() {
         var invalidInput = new CreateRestaurantUseCase.Input(
                 "The Great Burger",

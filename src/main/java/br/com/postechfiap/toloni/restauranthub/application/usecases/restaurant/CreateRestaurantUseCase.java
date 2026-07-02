@@ -2,8 +2,6 @@ package br.com.postechfiap.toloni.restauranthub.application.usecases.restaurant;
 
 import br.com.postechfiap.toloni.restauranthub.application.authorization.AuthorizationService;
 import br.com.postechfiap.toloni.restauranthub.application.gateways.RestaurantGateway;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserGateway;
-import br.com.postechfiap.toloni.restauranthub.application.gateways.UserTypeGateway;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.Restaurant;
 import br.com.postechfiap.toloni.restauranthub.domain.restaurant.valueobject.*;
 import br.com.postechfiap.toloni.restauranthub.domain.shared.exception.AlreadyExistsException;
@@ -19,11 +17,9 @@ import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
 ///
 /// ## Flow
 /// 1. Checks whether a [Restaurant] with the given name already exists
-/// 2. Finds the owner [User] by its identifier
-/// 3. Finds the [UserType] of the owner to validate the role
-/// 4. Ensures the owner has the [UserRole#RESTAURANT_OWNER] role
-/// 5. Creates the [Restaurant] entity with the provided attributes
-/// 6. Persists and returns the created [Restaurant]
+/// 2. Ensures the owner has the [UserRole#RESTAURANT_OWNER] role
+/// 3. Creates the [Restaurant] entity with the provided attributes
+/// 4. Persists and returns the created [Restaurant]
 ///
 /// ## Exceptions
 /// - Throws [AlreadyExistsException] if a [Restaurant] with the given name already exists
@@ -33,20 +29,13 @@ import br.com.postechfiap.toloni.restauranthub.domain.usertype.UserRole;
 public class CreateRestaurantUseCase {
 
     private final RestaurantGateway restaurantGateway;
-    private final UserGateway userGateway;
-    private final UserTypeGateway userTypeGateway;
     private final AuthorizationService authorizationService;
 
     /// @param restaurantGateway the gateway for [Restaurant] persistence operations
-    /// @param userGateway       the gateway for [User] persistence operations
-    /// @param userTypeGateway   the gateway for [UserType] persistence operations
+    /// @param authorizationService   the service for authorization
     public CreateRestaurantUseCase(RestaurantGateway restaurantGateway,
-                                   UserGateway userGateway,
-                                   UserTypeGateway userTypeGateway,
                                    AuthorizationService authorizationService) {
         this.restaurantGateway = restaurantGateway;
-        this.userGateway = userGateway;
-        this.userTypeGateway = userTypeGateway;
         this.authorizationService = authorizationService;
     }
 

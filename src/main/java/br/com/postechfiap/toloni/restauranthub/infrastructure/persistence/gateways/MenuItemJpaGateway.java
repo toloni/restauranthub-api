@@ -13,6 +13,7 @@ import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.reposi
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.repositories.RestaurantJpaRepository;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.JpaSpecificationBuilder;
 import br.com.postechfiap.toloni.restauranthub.infrastructure.persistence.shared.PageRequestMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -20,15 +21,16 @@ import java.util.Optional;
 ///
 /// Bridges the domain layer and the persistence layer, converting between
 /// [MenuItem] domain entities and [MenuItemJpaEntity] persistence models.
-public class MenuItemGatewayImpl implements MenuItemGateway {
+@Component
+public class MenuItemJpaGateway implements MenuItemGateway {
 
     private final MenuItemJpaRepository jpaRepository;
     private final RestaurantJpaRepository restaurantJpaRepository;
 
     /// @param jpaRepository           the Spring Data JPA repository for [MenuItemJpaEntity]
     /// @param restaurantJpaRepository the Spring Data JPA repository for [RestaurantJpaEntity]
-    public MenuItemGatewayImpl(MenuItemJpaRepository jpaRepository,
-                               RestaurantJpaRepository restaurantJpaRepository) {
+    public MenuItemJpaGateway(MenuItemJpaRepository jpaRepository,
+                              RestaurantJpaRepository restaurantJpaRepository) {
         this.jpaRepository = jpaRepository;
         this.restaurantJpaRepository = restaurantJpaRepository;
     }

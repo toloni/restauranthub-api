@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 /// Spring configuration for shared cross-cutting beans.
 @Configuration
-public class SharedConfig {
+public class AuthorizationConfig {
 
     @Bean
     public AuthorizationService authorizationService(UserGateway userGateway,
