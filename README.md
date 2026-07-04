@@ -154,7 +154,7 @@ src/main/java/br/com/postechfiap/toloni/restauranthub
     │   ├── UserTypeConfig
     │   ├── UserConfig
     │   ├── OpenApiConfig
-    │   ├── SharedConfig
+    │   ├── AuthorizationConfig
     │   ├── RestaurantConfig
     │   └── MenuItemConfig
     ├── persistence
@@ -452,7 +452,7 @@ All `GET` list endpoints support the following query parameters:
 ```bash
 # Clone the repository
 git clone https://github.com/toloni/restauranthub-app.git
-cd restauranthub
+cd restauranthub-app
 
 # Build and start all services
 docker compose up --build

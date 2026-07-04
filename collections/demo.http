@@ -1,0 +1,207 @@
+@host=http://localhost:8080
+
+### ---------------------------- ###
+###        User Types            ###
+### ---------------------------- ###
+
+### Create User Type Owner
+# @name userTypeOwner
+POST {{host}}/api/v1/user-types
+Content-Type: application/json
+
+{
+  "name": "Restaurant Owner",
+  "description": "User responsible for managing a restaurant.",
+  "role": "RESTAURANT_OWNER"
+}
+
+### Create User Type Customer
+# @name userTypeCustomer
+POST {{host}}/api/v1/user-types
+Content-Type: application/json
+
+{
+  "name": "Customer",
+  "description": "User who can browse restaurants and place orders.",
+  "role": "CUSTOMER"
+}
+
+### Create User Type Admin
+# @name userTypeAdmin
+POST {{host}}/api/v1/user-types
+Content-Type: application/json
+
+{
+  "name": "Administrator",
+  "description": "User who can management restaurants",
+  "role": "ADMIN"
+}
+
+### GET USERS TYPES
+GET {{host}}/api/v1/user-types
+###
+DELETE {{host}}/api/v1/user-types/7b18357e-c68b-4f16-ae4c-795ce3cc713f
+
+### ---------------------------- ###
+###           Users              ###
+### ---------------------------- ###
+
+
+### Restaurant Owner 1
+# @name userOwner_1
+POST {{host}}/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Alistair Cockburn",
+  "email": "alistair@mail.com",
+  "password": "password123",
+  "userTypeId": "{{userTypeOwner.response.body.id}}"
+}
+
+### Restaurant Owner 2
+# @name userOwner_2
+POST {{host}}/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Bob Martin",
+  "email": "bob@mail.com",
+  "password": "password123",
+  "userTypeId": "{{userTypeOwner.response.body.id}}"
+}
+
+### Customer
+# @name userCustomer
+POST {{host}}/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Steve Freeman",
+  "email": "steve@mail.com",
+  "password": "password123",
+  "userTypeId": "{{userTypeCustomer.response.body.id}}"
+}
+
+### Admin
+# @name userAdmin
+POST {{host}}/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Jeffrey Palerm",
+  "email": "jeffrey@mail.com",
+  "password": "password123",
+  "userTypeId": "{{userTypeAdmin.response.body.id}}"
+}
+
+### GET USERS
+GET {{host}}/api/v1/users
+### DELETE USER
+DELETE {{host}}/api/v1/users/92cf348e-4a2d-440f-911e-d1b2a98f9e22
+
+
+### ---------------------------- ###
+###         Restaurant           ###
+### ---------------------------- ###
+
+### Create Restaurant 1
+# @name restaurant_1
+POST {{host}}/api/v1/restaurants
+Content-Type: application/json
+X-User-Id: {{userOwner_1.response.body.id}}
+
+{
+  "name": "The Great Burger",
+  "address": "123 Main St, Springfield",
+  "cuisineType": "American",
+  "openingHours": "Mon-Fri 9am-10pm"
+}
+
+### Create Restaurant 2
+# @name restaurant_2
+POST {{host}}/api/v1/restaurants
+Content-Type: application/json
+X-User-Id: {{userOwner_2.response.body.id}}
+
+{
+  "name": "O Churrasco",
+  "address": "258 Avenida Brasil, Boston",
+  "cuisineType": "Brazilian",
+  "openingHours": "Tue-Sun 12pm-10pm"
+}
+
+### User with Invalid User Type
+POST {{host}}/api/v1/restaurants
+Content-Type: application/json
+X-User-Id: {{userCustomer.response.body.id}}
+
+{
+  "name": "La Bella Italia",
+  "address": "456 Olive Ave, New York",
+  "cuisineType": "Italian",
+  "openingHours": "Tue-Sun 11am-11pm"
+}
+
+### Transfer Ownership
+PATCH {{host}}/api/v1/restaurants/{{restaurant_1.response.body.id}}/transfer-ownership
+Content-Type: application/json
+X-User-Id: {{userAdmin.response.body.id}}
+
+{
+  "newOwnerId": "{{userOwner_1.response.body.id}}"
+}
+
+### GET RETAURANTS
+GET {{host}}/api/v1/restaurants
+
+###
+DELETE {{host}}/api/v1/restaurants/fdf17a18-6f32-4289-9107-8110d742ad7b
+X-User-Id: {{userAdmin.response.body.id}}
+
+
+### ---------------------------- ###
+###          Menu Item           ###
+### ---------------------------- ###
+
+### Menu Item Restaurant
+POST {{host}}/api/v1/menu-items
+Content-Type: application/json
+X-User-Id: {{userOwner_1.response.body.id}}
+
+{
+  "name": "Chicken Burger",
+  "description": "Crispy fried chicken with honey mustard and pickles",
+  "price": 22.90,
+  "currency": "BRL",
+  "dineInOnly": true,
+  "imagePath": "/images/chicken-burger.jpg",
+  "restaurantId": "{{restaurant_1.response.body.id}}"
+}
+
+### Menu Item Restaurant
+POST {{host}}/api/v1/menu-items
+Content-Type: application/json
+X-User-Id: {{userOwner_1.response.body.id}}
+
+{
+  "name": "BBQ Burger",
+  "description": "Smoky beef patty with BBQ sauce, onion rings and coleslaw",
+  "price": 26.90,
+  "currency": "BRL",
+  "dineInOnly": false,
+  "restaurantId": "{{restaurant_1.response.body.id}}"
+}
+
+### GET MENU ITEMS
+GET {{host}}/api/v1/menu-items
+
+###
+GET {{host}}/api/v1/menu-items
+    ?filter=restaurantId
+    &filterValue=7ced7125-8e54-4496-91f3-4cc0beada19a
+
+###
+DELETE {{host}}/api/v1/menu-items/461dec8b-4716-4c90-9ac3-93934e645b3f
+X-User-Id: {{userOwner_2.response.body.id}}
+

@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS menu_items (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     image_path VARCHAR(255),
-    price DECIMAL(10, 2) NOT NULL,
+    price DECIMAL(10, 3) NOT NULL,
     currency CHAR(3) NOT NULL,
     dine_in_only BOOLEAN NOT NULL,
     restaurant_id BINARY(16) NOT NULL,
