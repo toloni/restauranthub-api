@@ -156,7 +156,7 @@ X-User-Id: {{userAdmin.response.body.id}}
 GET {{host}}/api/v1/restaurants
 
 ###
-DELETE {{host}}/api/v1/restaurants/fdf17a18-6f32-4289-9107-8110d742ad7b
+DELETE {{host}}/api/v1/restaurants/05e15ed1-964f-405f-968e-db323ca2bddb
 X-User-Id: {{userAdmin.response.body.id}}
 
 
@@ -165,9 +165,9 @@ X-User-Id: {{userAdmin.response.body.id}}
 ### ---------------------------- ###
 
 ### Menu Item Restaurant
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_2.response.body.id}}/menu-items
 Content-Type: application/json
-X-User-Id: {{userOwner_1.response.body.id}}
+X-User-Id: {{userOwner_2.response.body.id}}
 
 {
   "name": "Chicken Burger",
@@ -175,33 +175,29 @@ X-User-Id: {{userOwner_1.response.body.id}}
   "price": 22.90,
   "currency": "BRL",
   "dineInOnly": true,
-  "imagePath": "/images/chicken-burger.jpg",
-  "restaurantId": "{{restaurant_1.response.body.id}}"
+  "imagePath": "/images/chicken-burger.jpg"
 }
 
 ### Menu Item Restaurant
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_2.response.body.id}}/menu-items
 Content-Type: application/json
-X-User-Id: {{userOwner_1.response.body.id}}
+X-User-Id: {{userOwner_2.response.body.id}}
 
 {
   "name": "BBQ Burger",
   "description": "Smoky beef patty with BBQ sauce, onion rings and coleslaw",
   "price": 26.90,
   "currency": "BRL",
-  "dineInOnly": false,
-  "restaurantId": "{{restaurant_1.response.body.id}}"
+  "dineInOnly": false
 }
 
 ### GET MENU ITEMS
 GET {{host}}/api/v1/menu-items
 
-###
-GET {{host}}/api/v1/menu-items
-    ?filter=restaurantId
-    &filterValue=7ced7125-8e54-4496-91f3-4cc0beada19a
+### GET MENU ITEMS OF A RESTAURANT
+GET {{host}}/api/v1/restaurants/{{restaurant_1.response.body.id}}/menu-items
 
 ###
-DELETE {{host}}/api/v1/menu-items/461dec8b-4716-4c90-9ac3-93934e645b3f
-X-User-Id: {{userOwner_2.response.body.id}}
+DELETE {{host}}/api/v1/menu-items/46fc4b8a-91d0-4d76-ba4f-f25513fed9de
+X-User-Id: {{userOwner_1.response.body.id}}
 

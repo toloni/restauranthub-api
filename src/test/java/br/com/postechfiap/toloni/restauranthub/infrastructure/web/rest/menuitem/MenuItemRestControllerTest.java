@@ -55,14 +55,14 @@ class MenuItemRestControllerTest {
     @DisplayName("Should create MenuItem and return response")
     void shouldCreateMenuItemAndReturnResponse() {
         var request = new MenuItemRequest("Classic Burger", "Juicy beef patty", new BigDecimal("19.90"),
-                "BRL", false, "/images/classic-burger.jpg", restaurantId.getValue().toString());
+                "BRL", false, "/images/classic-burger.jpg");
         var viewModel = new MenuItemViewModel(id.getValue(), "Classic Burger", "Juicy beef patty",
                 new BigDecimal("19.90"), Currency.getInstance("BRL"), false,
                 "/images/classic-burger.jpg", restaurantId.getValue(), null);
 
         when(menuItemController.create(any(CreateMenuItemUseCase.Input.class))).thenReturn(viewModel);
 
-        var response = restController.create(ownerId.getValue().toString(), request);
+        var response = restController.create(restaurantId.getValue().toString(), ownerId.getValue().toString(), request);
 
         assertThat(response.id()).isEqualTo(id.getValue());
         assertThat(response.name()).isEqualTo("Classic Burger");
@@ -70,20 +70,21 @@ class MenuItemRestControllerTest {
     }
 
     @Test
-    @DisplayName("Should call menuItemController create with mapped input including ownerId from header")
-    void shouldCallMenuItemControllerCreateWithMappedInputIncludingOwnerIdFromHeader() {
+    @DisplayName("Should call menuItemController create with mapped input including restaurantId from path and ownerId from header")
+    void shouldCallMenuItemControllerCreateWithMappedInputIncludingRestaurantIdFromPathAndOwnerIdFromHeader() {
         var request = new MenuItemRequest("Classic Burger", "Juicy beef patty", new BigDecimal("19.90"),
-                "BRL", false, "/images/classic-burger.jpg", restaurantId.getValue().toString());
+                "BRL", false, "/images/classic-burger.jpg");
         var viewModel = new MenuItemViewModel(id.getValue(), "Classic Burger", "Juicy beef patty",
                 new BigDecimal("19.90"), Currency.getInstance("BRL"), false,
                 "/images/classic-burger.jpg", restaurantId.getValue(), null);
 
         when(menuItemController.create(any(CreateMenuItemUseCase.Input.class))).thenReturn(viewModel);
 
-        restController.create(ownerId.getValue().toString(), request);
+        restController.create(restaurantId.getValue().toString(), ownerId.getValue().toString(), request);
 
         var captor = ArgumentCaptor.forClass(CreateMenuItemUseCase.Input.class);
         verify(menuItemController, times(1)).create(captor.capture());
+        assertThat(captor.getValue().restaurantId()).isEqualTo(restaurantId);
         assertThat(captor.getValue().ownerId()).isEqualTo(ownerId);
         assertThat(captor.getValue().name()).isEqualTo("Classic Burger");
     }
@@ -95,7 +96,7 @@ class MenuItemRestControllerTest {
     @Test
     @DisplayName("Should update MenuItem and return response")
     void shouldUpdateMenuItemAndReturnResponse() {
-        var request = new MenuItemRequest("Bacon Burger", null, null, null, null, null, null);
+        var request = new MenuItemRequest("Bacon Burger", null, null, null, null, null);
         var viewModel = new MenuItemViewModel(id.getValue(), "Bacon Burger", "Juicy beef patty",
                 new BigDecimal("19.90"), Currency.getInstance("BRL"), false,
                 "/images/classic-burger.jpg", restaurantId.getValue(), null);
@@ -111,7 +112,7 @@ class MenuItemRestControllerTest {
     @Test
     @DisplayName("Should call menuItemController update with mapped id, ownerId and input")
     void shouldCallMenuItemControllerUpdateWithMappedIdOwnerIdAndInput() {
-        var request = new MenuItemRequest("Bacon Burger", null, null, null, null, null, null);
+        var request = new MenuItemRequest("Bacon Burger", null, null, null, null, null);
         var viewModel = new MenuItemViewModel(id.getValue(), "Bacon Burger", "Juicy beef patty",
                 new BigDecimal("19.90"), Currency.getInstance("BRL"), false,
                 "/images/classic-burger.jpg", restaurantId.getValue(), null);
@@ -176,20 +177,20 @@ class MenuItemRestControllerTest {
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        var response = restController.findAll(null, 0, 10, null, null, null, null);
+        var response = restController.findAll(0, 10, null, null, null, null);
 
         assertThat(response.content()).hasSize(1);
         assertThat(response.content().getFirst().name()).isEqualTo("Classic Burger");
     }
 
     @Test
-    @DisplayName("Should build Input with null restaurantId when not provided")
-    void shouldBuildInputWithNullRestaurantIdWhenNotProvided() {
+    @DisplayName("Should build Input with null restaurantId on global listing")
+    void shouldBuildInputWithNullRestaurantIdOnGlobalListing() {
         var page = Page.<MenuItemViewModel>of(List.of(), 0, 10, 0L);
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        restController.findAll(null, 0, 10, null, null, null, null);
+        restController.findAll(0, 10, null, null, null, null);
 
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
@@ -197,13 +198,13 @@ class MenuItemRestControllerTest {
     }
 
     @Test
-    @DisplayName("Should build Input with resolved restaurantId when provided")
-    void shouldBuildInputWithResolvedRestaurantIdWhenProvided() {
+    @DisplayName("Should build Input with resolved restaurantId on restaurant-scoped listing")
+    void shouldBuildInputWithResolvedRestaurantIdOnRestaurantScopedListing() {
         var page = Page.<MenuItemViewModel>of(List.of(), 0, 10, 0L);
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        restController.findAll(restaurantId.getValue().toString(), 0, 10, null, null, null, null);
+        restController.findAllByRestaurant(restaurantId.getValue().toString(), 0, 10, null, null, null, null);
 
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
@@ -217,7 +218,7 @@ class MenuItemRestControllerTest {
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        restController.findAll(null, 0, 10, null, null, null, null);
+        restController.findAll(0, 10, null, null, null, null);
 
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
@@ -231,7 +232,7 @@ class MenuItemRestControllerTest {
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        restController.findAll(null, 0, 10, "name", null, null, null);
+        restController.findAll(0, 10, "name", null, null, null);
 
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
@@ -246,7 +247,7 @@ class MenuItemRestControllerTest {
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        restController.findAll(null, 0, 10, "price", "DESC", null, null);
+        restController.findAll(0, 10, "price", "DESC", null, null);
 
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
@@ -261,7 +262,7 @@ class MenuItemRestControllerTest {
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        restController.findAll(null, 0, 10, null, null, "name", "Burger");
+        restController.findAll(0, 10, null, null, "name", "Burger");
 
         var captor = ArgumentCaptor.forClass(FindAllMenuItemsUseCase.Input.class);
         verify(menuItemController, times(1)).findAll(captor.capture());
@@ -277,7 +278,7 @@ class MenuItemRestControllerTest {
 
         when(menuItemController.findAll(any(FindAllMenuItemsUseCase.Input.class))).thenReturn(page);
 
-        var response = restController.findAll(null, 0, 10, null, null, null, null);
+        var response = restController.findAll(0, 10, null, null, null, null);
 
         assertThat(response.content()).isEmpty();
         assertThat(response.totalElements()).isZero();

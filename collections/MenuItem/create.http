@@ -4,7 +4,7 @@
 
 
 ### ✅ Create valid MenuItem with dineInOnly false
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -14,12 +14,11 @@ X-User-Id: {{owner_id}}
   "price": 18.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/caesar-salad.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/caesar-salad.jpg"
 }
 
 ### ✅ Create valid MenuItem with dineInOnly true
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -29,12 +28,11 @@ X-User-Id: {{owner_id}}
   "price": 22.90,
   "currency": "BRL",
   "dineInOnly": true,
-  "imagePath": "/images/chicken-burger.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/chicken-burger.jpg"
 }
 
 ### ✅ Create MenuItem without imagePath (optional field)
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -43,12 +41,11 @@ X-User-Id: {{owner_id}}
   "description": "Smoky beef patty with BBQ sauce, onion rings and coleslaw",
   "price": 26.90,
   "currency": "BRL",
-  "dineInOnly": false,
-  "restaurantId": "{{restaurant_id}}"
+  "dineInOnly": false
 }
 
 ### ❌ Create missing 'name'
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -57,12 +54,11 @@ X-User-Id: {{owner_id}}
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create missing 'description'
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -71,12 +67,11 @@ X-User-Id: {{owner_id}}
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create missing 'price'
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -85,12 +80,11 @@ X-User-Id: {{owner_id}}
   "description": "Creamy milkshake available in chocolate, vanilla and strawberry",
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create missing 'currency'
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -99,12 +93,11 @@ X-User-Id: {{owner_id}}
   "description": "Creamy milkshake available in chocolate, vanilla and strawberry",
   "price": 16.90,
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create with negative price
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -114,12 +107,11 @@ X-User-Id: {{owner_id}}
   "price": -16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create with invalid currency code
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -129,12 +121,11 @@ X-User-Id: {{owner_id}}
   "price": 16.90,
   "currency": "AAA",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create with duplicate 'name' in the same restaurant
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -144,12 +135,11 @@ X-User-Id: {{owner_id}}
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ✅ Create with duplicate 'name' in a different restaurant
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/7eae2ffc-b43d-4c51-8d97-6ce5197e228f/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -159,12 +149,11 @@ X-User-Id: {{owner_id}}
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "7eae2ffc-b43d-4c51-8d97-6ce5197e228f"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create with non-existent restaurantId (404 Not Found)
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/20b77569-1c2a-4bee-b32a-428e665a8529/menu-items
 Content-Type: application/json
 X-User-Id: {{owner_id}}
 
@@ -174,12 +163,11 @@ X-User-Id: {{owner_id}}
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "20b77569-1c2a-4bee-b32a-428e665a8529"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create with X-User-Id different from owner (403 Forbidden)
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: 20b77569-1c2a-4bee-b32a-428e665a8529
 
@@ -189,12 +177,11 @@ X-User-Id: 20b77569-1c2a-4bee-b32a-428e665a8529
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create missing 'X-User-Id' header (400 Bad Request)
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 
 {
@@ -203,12 +190,11 @@ Content-Type: application/json
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }
 
 ### ❌ Create with invalid 'X-User-Id' format (Invalid UUID)
-POST {{host}}/api/v1/menu-items
+POST {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 Content-Type: application/json
 X-User-Id: 123
 
@@ -218,6 +204,5 @@ X-User-Id: 123
   "price": 16.90,
   "currency": "BRL",
   "dineInOnly": false,
-  "imagePath": "/images/milkshake.jpg",
-  "restaurantId": "{{restaurant_id}}"
+  "imagePath": "/images/milkshake.jpg"
 }

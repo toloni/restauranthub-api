@@ -18,14 +18,14 @@ import java.util.Currency;
 /// @param dineInOnly  whether this item is available for dine-in only
 /// @param imagePath   the image path of the menu item, may be null
 public record MenuItemRequest(String name, String description, BigDecimal price,
-                              String currency, Boolean dineInOnly, String imagePath, String restaurantId) {
+                              String currency, Boolean dineInOnly, String imagePath) {
 
     /// Converts this request to a [CreateMenuItemUseCase.Input].
     ///
     /// @param restaurantId the [RestaurantId] of the restaurant this item belongs to
     /// @param ownerId      the [UserId] of the authenticated user
     /// @return a new [CreateMenuItemUseCase.Input] with the data from this request
-    public CreateMenuItemUseCase.Input toCreateInput(UserId ownerId) {
+    public CreateMenuItemUseCase.Input toCreateInput(RestaurantId restaurantId, UserId ownerId) {
         return new CreateMenuItemUseCase.Input(
                 name,
                 description,
@@ -33,7 +33,7 @@ public record MenuItemRequest(String name, String description, BigDecimal price,
                 currency == null ? null : Currency.getInstance(currency),
                 dineInOnly,
                 imagePath,
-                RestaurantId.of(restaurantId),
+                restaurantId,
                 ownerId
         );
     }

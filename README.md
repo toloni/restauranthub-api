@@ -381,13 +381,14 @@ Base URL: `http://localhost:8080/api/v1`
 
 ### MenuItem
 
-| Method   | Route              | Description                     | Headers     | Response Codes                    |
-|----------|--------------------|---------------------------------|-------------|-----------------------------------|
-| `POST`   | `/menu-items`      | Create a new menu item          | `X-User-Id` | `201`, `403`, `404`, `409`, `422` |
-| `PUT`    | `/menu-items/{id}` | Update an existing menu item    | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
-| `DELETE` | `/menu-items/{id}` | Delete a menu item              | `X-User-Id` | `204`, `403`, `404`               |
-| `GET`    | `/menu-items/{id}` | Find a menu item by id          | —           | `200`, `404`                      |
-| `GET`    | `/menu-items`      | List all menu items (paginated) | —           | `200`                             |
+| Method   | Route                                | Description                                | Headers     | Response Codes                    |
+|----------|--------------------------------------|--------------------------------------------|-------------|-----------------------------------|
+| `POST`   | `/restaurants/{restaurantId}/menu-items` | Create a new menu item for a restaurant | `X-User-Id` | `201`, `403`, `404`, `409`, `422` |
+| `GET`    | `/restaurants/{restaurantId}/menu-items` | List menu items of a restaurant (paginated) | —       | `200`                             |
+| `PATCH`  | `/menu-items/{id}`                   | Update an existing menu item               | `X-User-Id` | `200`, `403`, `404`, `409`, `422` |
+| `DELETE` | `/menu-items/{id}`                   | Delete a menu item                         | `X-User-Id` | `204`, `403`, `404`               |
+| `GET`    | `/menu-items/{id}`                   | Find a menu item by id                     | —           | `200`, `404`                      |
+| `GET`    | `/menu-items`                        | List all menu items (paginated)            | —           | `200`                             |
 
 ---
 
@@ -593,7 +594,7 @@ Collections for Postman and Insomnia are available in the `/collections` directo
 1. Create user types (`POST /user-types`)
 2. Create users (`POST /users`)
 3. Create restaurants (`POST /restaurants`) — requires `X-User-Id` of a `RESTAURANT_OWNER`
-4. Create menu items (`POST /menu-items`) — requires `X-User-Id` of the restaurant owner
+4. Create menu items (`POST /restaurants/{restaurantId}/menu-items`) — requires `X-User-Id` of the restaurant owner
 5. Test read endpoints (`GET`)
 6. Test update endpoints (`PATCH`)
 7. Test delete endpoints (`DELETE`)

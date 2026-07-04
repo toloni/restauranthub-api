@@ -84,16 +84,16 @@ class MenuItemApiIT {
     }
 
     // -------------------------------------------------------------------------
-    // POST /api/v1/menu-items
+    // POST /api/v1/restaurants/{restaurantId}/menu-items
     // -------------------------------------------------------------------------
 
     @Test
     @DisplayName("Should create MenuItem successfully")
     void shouldCreateMenuItemSuccessfully() throws Exception {
         var request = new MenuItemRequest("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
-                "BRL", false, null, restaurantId.toString());
+                "BRL", false, null);
 
-        mockMvc.perform(post("/api/v1/menu-items")
+        mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/menu-items", restaurantId)
                         .header("X-User-Id", ownerUserId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -111,15 +111,15 @@ class MenuItemApiIT {
     @DisplayName("Should return 409 when menu item name already exists in restaurant")
     void shouldReturn409WhenMenuItemNameAlreadyExistsInRestaurant() throws Exception {
         var request = new MenuItemRequest("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
-                "BRL", false, null, restaurantId.toString());
+                "BRL", false, null);
 
-        mockMvc.perform(post("/api/v1/menu-items")
+        mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/menu-items", restaurantId)
                         .header("X-User-Id", ownerUserId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(post("/api/v1/menu-items")
+        mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/menu-items", restaurantId)
                         .header("X-User-Id", ownerUserId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -131,9 +131,9 @@ class MenuItemApiIT {
     @DisplayName("Should return 404 when restaurant does not exist")
     void shouldReturn404WhenRestaurantDoesNotExist() throws Exception {
         var request = new MenuItemRequest("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
-                "BRL", false, null, UUID.randomUUID().toString());
+                "BRL", false, null);
 
-        mockMvc.perform(post("/api/v1/menu-items")
+        mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/menu-items", UUID.randomUUID())
                         .header("X-User-Id", ownerUserId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -145,9 +145,9 @@ class MenuItemApiIT {
     @DisplayName("Should return 403 when user is not the owner of the restaurant")
     void shouldReturn403WhenUserIsNotOwnerOfRestaurant() throws Exception {
         var request = new MenuItemRequest("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
-                "BRL", false, null, restaurantId.toString());
+                "BRL", false, null);
 
-        mockMvc.perform(post("/api/v1/menu-items")
+        mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/menu-items", restaurantId)
                         .header("X-User-Id", otherOwnerUserId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -159,9 +159,9 @@ class MenuItemApiIT {
     @DisplayName("Admin should create menu item for any restaurant")
     void adminShouldCreateMenuItemForAnyRestaurant() throws Exception {
         var request = new MenuItemRequest("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
-                "BRL", false, null, restaurantId.toString());
+                "BRL", false, null);
 
-        mockMvc.perform(post("/api/v1/menu-items")
+        mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/menu-items", restaurantId)
                         .header("X-User-Id", adminUserId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -179,7 +179,7 @@ class MenuItemApiIT {
         var created = createMenuItem("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
                 "BRL", false, restaurantId, ownerUserId);
         var request = new MenuItemRequest("Double Burger", null, new BigDecimal("29.90"),
-                "BRL", null, null, null);
+                "BRL", null, null);
 
         mockMvc.perform(patch("/api/v1/menu-items/{id}", created.id())
                         .header("X-User-Id", ownerUserId.toString())
@@ -194,7 +194,7 @@ class MenuItemApiIT {
     @Test
     @DisplayName("Should return 404 when updating non-existing MenuItem")
     void shouldReturn404WhenUpdatingNonExistingMenuItem() throws Exception {
-        var request = new MenuItemRequest("Double Burger", null, null, null, null, null, null);
+        var request = new MenuItemRequest("Double Burger", null, null, null, null, null);
 
         mockMvc.perform(patch("/api/v1/menu-items/{id}", UUID.randomUUID())
                         .header("X-User-Id", ownerUserId.toString())
@@ -211,7 +211,7 @@ class MenuItemApiIT {
                 "BRL", false, restaurantId, ownerUserId);
         var veggie = createMenuItem("Veggie Burger", "Plant-based burger", new BigDecimal("22.90"),
                 "BRL", false, restaurantId, ownerUserId);
-        var request = new MenuItemRequest("Classic Burger", null, null, null, null, null, null);
+        var request = new MenuItemRequest("Classic Burger", null, null, null, null, null);
 
         mockMvc.perform(patch("/api/v1/menu-items/{id}", veggie.id())
                         .header("X-User-Id", ownerUserId.toString())
@@ -226,7 +226,7 @@ class MenuItemApiIT {
     void shouldReturn403WhenNonOwnerTriesToUpdateMenuItem() throws Exception {
         var created = createMenuItem("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
                 "BRL", false, restaurantId, ownerUserId);
-        var request = new MenuItemRequest("Double Burger", null, null, null, null, null, null);
+        var request = new MenuItemRequest("Double Burger", null, null, null, null, null);
 
         mockMvc.perform(patch("/api/v1/menu-items/{id}", created.id())
                         .header("X-User-Id", otherOwnerUserId.toString())
@@ -241,7 +241,7 @@ class MenuItemApiIT {
     void adminShouldUpdateAnyMenuItem() throws Exception {
         var created = createMenuItem("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
                 "BRL", false, restaurantId, ownerUserId);
-        var request = new MenuItemRequest("Double Burger", null, null, null, null, null, null);
+        var request = new MenuItemRequest("Double Burger", null, null, null, null, null);
 
         mockMvc.perform(patch("/api/v1/menu-items/{id}", created.id())
                         .header("X-User-Id", adminUserId.toString())
@@ -343,8 +343,8 @@ class MenuItemApiIT {
     }
 
     @Test
-    @DisplayName("Should return MenuItems filtered by restaurantId")
-    void shouldReturnMenuItemsFilteredByRestaurantId() throws Exception {
+    @DisplayName("Should return MenuItems of a restaurant via nested route")
+    void shouldReturnMenuItemsOfARestaurantViaNestedRoute() throws Exception {
         var otherRestaurantId = createRestaurant("Pizza Place", "456 Oak Ave", "Italian",
                 "Tue-Sun 11am-11pm", otherOwnerUserId);
         createMenuItem("Classic Burger", "Juicy beef burger", new BigDecimal("19.90"),
@@ -352,8 +352,7 @@ class MenuItemApiIT {
         createMenuItem("Margherita Pizza", "Classic tomato pizza", new BigDecimal("35.00"),
                 "BRL", false, otherRestaurantId, otherOwnerUserId);
 
-        mockMvc.perform(get("/api/v1/menu-items")
-                        .param("restaurantId", restaurantId.toString()))
+        mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/menu-items", restaurantId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].name").value("Classic Burger"));
@@ -439,9 +438,9 @@ class MenuItemApiIT {
     private MenuItemResponse createMenuItem(String name, String description, BigDecimal price,
                                             String currency, boolean dineInOnly,
                                             UUID restaurantId, UUID ownerId) throws Exception {
-        var request = new MenuItemRequest(name, description, price, currency, dineInOnly, null, restaurantId.toString());
+        var request = new MenuItemRequest(name, description, price, currency, dineInOnly, null);
 
-        var result = mockMvc.perform(post("/api/v1/menu-items")
+        var result = mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/menu-items", restaurantId)
                         .header("X-User-Id", ownerId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

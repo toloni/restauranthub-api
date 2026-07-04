@@ -27,10 +27,11 @@ public class MenuItemRestController implements MenuItemApi {
     }
 
     @Override
-    public MenuItemResponse create(@RequestHeader("X-User-Id") String userId,
+    public MenuItemResponse create(@PathVariable String restaurantId,
+                                   @RequestHeader("X-User-Id") String userId,
                                    @RequestBody MenuItemRequest request) {
         return MenuItemResponse.from(menuItemController.create(
-                request.toCreateInput(UserId.of(userId))
+                request.toCreateInput(RestaurantId.of(restaurantId), UserId.of(userId))
         ));
     }
 
@@ -60,14 +61,33 @@ public class MenuItemRestController implements MenuItemApi {
     }
 
     @Override
-    public Page<MenuItemResponse> findAll(
-            @RequestParam(required = false) String restaurantId,
+    public Page<MenuItemResponse> findAllByRestaurant(
+            @PathVariable String restaurantId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String direction,
             @RequestParam(required = false) String filter,
             @RequestParam(required = false) String filterValue) {
+
+        return findAll(RestaurantId.of(restaurantId), page, size, sort, direction, filter, filterValue);
+    }
+
+    @Override
+    public Page<MenuItemResponse> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String direction,
+            @RequestParam(required = false) String filter,
+            @RequestParam(required = false) String filterValue) {
+
+        return findAll(null, page, size, sort, direction, filter, filterValue);
+    }
+
+    private Page<MenuItemResponse> findAll(RestaurantId restaurantId, int page, int size,
+                                           String sort, String direction,
+                                           String filter, String filterValue) {
 
         var sorts = sort != null
                 ? List.<PageSort>of(PageSort.of(sort, direction != null
@@ -79,11 +99,9 @@ public class MenuItemRestController implements MenuItemApi {
                 ? List.<PageFilter>of(PageFilter.of(filter, filterValue))
                 : List.<PageFilter>of();
 
-        var resolvedRestaurantId = restaurantId != null ? RestaurantId.of(restaurantId) : null;
-
         var output = menuItemController.findAll(
                 new FindAllMenuItemsUseCase.Input(
-                        resolvedRestaurantId,
+                        restaurantId,
                         PageRequest.of(page, size, filters, sorts)
                 )
         );

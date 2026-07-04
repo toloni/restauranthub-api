@@ -24,10 +24,8 @@ GET {{host}}/api/v1/menu-items
     ?sort=price
     &direction=ASC
 
-### ✅ Filter by existing restaurantId
-GET {{host}}/api/v1/menu-items
-    ?filter=restaurantId
-    &filterValue=1bc46c0b-e382-4c19-bc5b-1d3ce44206da
+### ✅ List menu items of a restaurant (nested route)
+GET {{host}}/api/v1/restaurants/{{restaurant_id}}/menu-items
 
 ### ✅ Filter by existing name
 GET {{host}}/api/v1/menu-items
